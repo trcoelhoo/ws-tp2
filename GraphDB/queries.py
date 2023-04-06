@@ -20,7 +20,7 @@ WHERE {
 
 """
 
-# Query 2 - show all the books that has "Harry Potter" as substring from its title
+# Query 2 - show all the books that has "Harry Potter" as substring from its title (case insensitive)
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -30,12 +30,11 @@ SELECT
 
 WHERE {
     ?book pred:has_title ?title .
-    FILTER regex(?title, "Harry Potter")
+    FILTER regex(?title, "Harry Potter", "i")
 }
-
 """
 
-# Query 3 - show all the books that starts with "043935" from its ISBN
+# Query 3 - show all the books that has "043935" on its ISBN
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -50,7 +49,7 @@ WHERE {
 
 """
 
-# Query 4 - show all the books that has "Harry Potter" as substring from its title and starts with "043935" from its ISBN
+# Query 4 - show all the books that has "Harry Potter" as substring from its title and starts with "043935" from its ISBN (case insensitive)
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -60,14 +59,14 @@ SELECT
 
 WHERE {
     ?book pred:has_title ?title .
-    FILTER regex(?title, "Harry Potter")
+    FILTER regex(?title, "Harry Potter", "i")
     ?book pred:has_isbn ?isbn .
     FILTER regex(?isbn, "^043935")
 }
 
 """
 
-# Query 5 - show all the books that has written by "Rowling" as substring from its author
+# Query 5 - show all the books that has written by "Rowling" as substring from its author (case insensitive)
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -78,12 +77,12 @@ SELECT ?book
 WHERE {
     ?book pred:written_by ?author .
     ?author pred:has_name ?name .
-    FILTER regex(?name, "Rowling")
+    FILTER regex(?name, "Rowling", "i")
 }
 
 """
 
-# Query 6 - show all the books that has written by "Rowling" as substring from its author and has "Harry Potter" as substring from its title
+# Query 6 - show all the books that has written by "Rowling" as substring from its author and has "Harry Potter" as substring from its title (case insensitive)
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -94,9 +93,9 @@ SELECT ?book
 WHERE {
     ?book pred:written_by ?author .
     ?author pred:has_name ?name .
-    FILTER regex(?name, "Rowling")
+    FILTER regex(?name, "Rowling" , "i")
     ?book pred:has_title ?title .
-    FILTER regex(?title, "Harry Potter")
+    FILTER regex(?title, "Harry Potter", "i")
 }
 
 
@@ -115,7 +114,7 @@ WHERE {
 
 """
 
-# Query 8 - show all the books that was published after 2019 
+# Query 8 - show all the books that was published after 2019  and before 2020
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -123,7 +122,7 @@ PREFIX pred: <http://books.com/preds/>
 SELECT ?book
 WHERE {
     ?book pred:published_on ?date .
-    FILTER (?date > "2019-01-01"^^xsd:date)
+    FILTER (?date > "2019-01-01"^^xsd:date && ?date < "2020-01-01"^^xsd:date)
 }
 
 
@@ -158,7 +157,7 @@ WHERE {
 
 """
 
-# Query 11 - show all the books was published by "USA" as substring from its publisher
+# Query 11 - show all the books was published by "USA" as substring from its publisher (case insensitive)
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -168,7 +167,7 @@ SELECT ?book
 WHERE {
     ?book pred:published_by ?publisher .
     ?publisher pred:has_name ?name .
-    FILTER regex(?name, "USA")
+    FILTER regex(?name, "USA", "i")
 }
 
 """
@@ -246,6 +245,40 @@ INSERT {
 WHERE {
     books:1 pred:has_seen "true"^^xsd:boolean .
 }
+"""
+# Query 17 - Search for a book by its title or isbn or author name or publisher name (case insensitive) and show the results without duplicates
+
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+PREFIX authors: <http://books.com/authors/>
+PREFIX publishers: <http://books.com/publishers/>
+SELECT DISTINCT ?book
+WHERE {
+    {
+        ?book pred:has_title ?title .
+        FILTER regex(?title, "Harry Potter", "i")
+    }
+    UNION
+    {
+        ?book pred:has_isbn ?isbn .
+        FILTER regex(?isbn, "^0435", "i")
+    }
+    UNION
+    {
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?name .
+        FILTER regex(?name, "Rowling", "i")
+    }
+    UNION
+    {
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?name .
+        FILTER regex(?name, "USA", "i")
+    }
+}
+
 """
 
 payload_query = {"query": query}
