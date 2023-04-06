@@ -173,6 +173,81 @@ WHERE {
 
 """
 
+# Query 12 - remove has_seen property from all books and add has_seen_by property to all books
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+DELETE {
+    ?book pred:has_seen_by ?seen .
+}
+INSERT {
+    ?book pred:has_seen "false"^^xsd:boolean .
+}
+WHERE {
+    ?book pred:has_seen_by ?seen .
+}
+"""
+
+#Query 13 - mark a book as seen
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+DELETE {
+    books:1 pred:has_seen "false"^^xsd:boolean .
+}
+INSERT {
+    books:1 pred:has_seen "true"^^xsd:boolean .
+}
+WHERE {
+    books:1 pred:has_seen "false"^^xsd:boolean .
+}
+"""
+
+# Query 14 - show all the books that has seen
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+SELECT ?book
+WHERE {
+    ?book pred:has_seen "true"^^xsd:boolean .
+}
+
+"""
+
+# Query 15 - show all the books that has not seen
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+SELECT ?book
+WHERE {
+    ?book pred:has_seen "false"^^xsd:boolean .
+}
+
+"""
+
+# Query 16 - mark a book as not seen
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+DELETE {
+    books:1 pred:has_seen "true"^^xsd:boolean .
+}
+INSERT {
+    books:1 pred:has_seen "false"^^xsd:boolean .
+}
+WHERE {
+    books:1 pred:has_seen "true"^^xsd:boolean .
+}
+"""
+
 payload_query = {"query": query}
 res = accessor.sparql_select(body=payload_query,
 repo_name=repo_name)
