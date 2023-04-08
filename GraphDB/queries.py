@@ -269,6 +269,7 @@ PREFIX authors: <http://books.com/authors/>
 PREFIX publishers: <http://books.com/publishers/>
 SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
 WHERE {
+    {
     ?book pred:has_title ?title .
     ?book pred:written_by ?author .
     ?author pred:has_name ?author_name .
@@ -282,8 +283,61 @@ WHERE {
     ?publisher pred:has_name ?publisher_name .
     ?book pred:published_on ?publication_date .
     ?book pred:has_isbn ?isbn .
-    FILTER regex(?title, "Harry Potter", "i") || regex(?isbn, "Harry Potter", "i") || regex(?author_name, "Harry Potter", "i") || regex(?publisher_name, "Harry Potter", "i")
+    FILTER regex(?title, "Harry Potter", "i")
+    }
+    UNION
+    {
+    ?book pred:has_title ?title .
+    ?book pred:written_by ?author .
+    ?author pred:has_name ?author_name .
+    ?book pred:has_pages ?pages .
+    ?book pred:has_genre ?genre .
+    ?book pred:has_rating ?rating .
+    ?book pred:rated_by ?reviews .
+    ?book pred:has_seen ?has_seen .
+    ?book pred:has_language ?language .
+    ?book pred:published_by ?publisher .
+    ?publisher pred:has_name ?publisher_name .
+    ?book pred:published_on ?publication_date .
+    ?book pred:has_isbn ?isbn .
+    FILTER regex(?isbn, "Harry Potter", "i")
+    }
+    UNION
+    {
+    ?book pred:has_title ?title .
+    ?book pred:written_by ?author .
+    ?author pred:has_name ?author_name .
+    ?book pred:has_pages ?pages .
+    ?book pred:has_genre ?genre .
+    ?book pred:has_rating ?rating .
+    ?book pred:rated_by ?reviews .
+    ?book pred:has_seen ?has_seen .
+    ?book pred:has_language ?language .
+    ?book pred:published_by ?publisher .
+    ?publisher pred:has_name ?publisher_name .
+    ?book pred:published_on ?publication_date .
+    ?book pred:has_isbn ?isbn .
+    FILTER regex(?author_name, "Harry Potter", "i")
+    }
+    UNION
+    {
+    ?book pred:has_title ?title .
+    ?book pred:written_by ?author .
+    ?author pred:has_name ?author_name .
+    ?book pred:has_pages ?pages .
+    ?book pred:has_genre ?genre .
+    ?book pred:has_rating ?rating .
+    ?book pred:rated_by ?reviews .
+    ?book pred:has_seen ?has_seen .
+    ?book pred:has_language ?language .
+    ?book pred:published_by ?publisher .
+    ?publisher pred:has_name ?publisher_name .
+    ?book pred:published_on ?publication_date .
+    ?book pred:has_isbn ?isbn .
+    FILTER regex(?publisher_name, "Harry Potter", "i")
+    }
 }
+
 
 
 """
@@ -565,6 +619,66 @@ WHERE {
 
 """
 
+# Query 29 - update genre of books that have "short" genre for less than 300 pages
+
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+DELETE {
+    ?book pred:has_genre "short" .
+}
+INSERT {
+    ?book pred:has_genre "long" .
+}
+WHERE {
+    ?book pred:has_genre "short" .
+    ?book pred:has_pages ?pages .
+    FILTER (xsd:integer(?pages) > 300)
+}
+"""
+
+# Query 30 - update genre of books that have "good genre for more than4.0
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+DELETE {
+    ?book pred:has_genre "bad" .
+}
+INSERT {
+    ?book pred:has_genre "good" .
+}
+WHERE {
+    ?book pred:has_genre "bad" .
+    ?book pred:has_rating ?rating .
+    FILTER (xsd:decimal(?rating) > 4.0)
+}
+"""
+
+#Get seen books (boolean value)
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+SELECT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
+WHERE {
+    ?book pred:has_seen "true"^^xsd:boolean .
+    ?book pred:has_title ?title .
+    ?book pred:written_by ?author .
+    ?author pred:has_name ?author_name .
+    ?book pred:has_pages ?pages .
+    ?book pred:has_genre ?genre .
+    ?book pred:has_rating ?rating .
+    ?book pred:rated_by ?reviews .
+    ?book pred:has_seen ?has_seen .
+    ?book pred:has_language ?language .
+    ?book pred:published_by ?publisher .
+    ?publisher pred:has_name ?publisher_name .
+    ?book pred:published_on ?publication_date .
+    ?book pred:has_isbn ?isbn .
+}
+
+"""
 
 payload_query = {"query": query}
 res = accessor.sparql_select(body=payload_query,

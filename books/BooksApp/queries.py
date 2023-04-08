@@ -9,7 +9,7 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT (COUNT(?book) AS ?count)
     WHERE {
-        ?book pred:has_genre "short_good" .
+        ?book pred:has_genre "short" .
     }
     """
 
@@ -113,13 +113,59 @@ class Queries:
     }
     """
 
+    #Get the number of books seen
+    nSeenBooks = """
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    SELECT (COUNT(?book) AS ?count)
+    WHERE {
+        ?book pred:has_seen "true"^^xsd:boolean .
+    }
+    """
+
+    #Get seen books
+    seenBooks = """
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    SELECT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
+    WHERE {
+        ?book pred:has_seen "true"^^xsd:boolean .
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
+    }
+    """
+
+
     #Get all books
     allBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
         ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
@@ -258,16 +304,26 @@ class Queries:
     def get_books(self, query):
         response = self.db.query(query)
         list = []
+        isbn_list = []
         for i in response:
 
             # check if the book is already in the list and if it is, add the author to the list of authors and the genre to the list of genres if it is not already there
-            if i['isbn']['value'] in [x['isbn'] for x in list]:
-                for x in list:
-                    if x['isbn'] == i['isbn']['value']:
-                        if i['author_name']['value'] not in x['author_name']:
-                            x['author_name'] = x['author_name'] + ", " + i['author_name']['value']
-                        if i['genre']['value'] not in x['genre']:
-                            x['genre'] = x['genre'] + ", " + i['genre']['value']
+            if i['isbn']['value'] in isbn_list:
+                #get position of the book in the list
+                position = isbn_list.index(i['isbn']['value'])
+                #get the list of authors
+                authors = list[position]['author_name']
+                #get the list of genres
+                genres = list[position]['genre']
+                #check if the author is already in the list of authors
+                if i['author_name']['value'] not in authors:
+                    #if not, add it
+                    authors= list[position]['author_name']+","+i['author_name']['value']
+                #check if the genre is already in the list of genres
+                if i['genre']['value'] not in genres:
+                    #if not, add it
+                    genres= list[position]['genre']+","+i['genre']['value']
+
             else:
                 dict = {}
                 dict['title'] = i['title']['value']
@@ -283,6 +339,7 @@ class Queries:
                 dict['isbn'] = i['isbn']['value']
 
                 list.append(dict)
+                isbn_list.append(i['isbn']['value'])
 
         return list
 
@@ -311,7 +368,16 @@ class Queries:
     def search_year(self, year1, year2):
         query = self.searchYear.replace("year1", year1).replace("year2", year2)
         return self.get_books(query)
-    
+
+    def get_number_seen_books(self):
+        response = self.db.query(self.nSeenBooks)
+        return response[0]['count']['value']
+
+    def get_seen_books(self):
+        query = self.seenBooks
+        return self.get_books(query)
+
+
 
 
 

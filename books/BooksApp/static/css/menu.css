@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+.menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+}
+.menu{
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+}
+.menu .hexagonArea{
+    display: flex;
+}
+
+.menu .hexagonArea.last{
+    transform: translate(0px, -45px);
+}
+
+.menu .hexagonArea .hexagon{
+    position: relative;
+    width: 200px;
+    height: 250px;
+    margin: 0 10px;
+    clip-path: polygon(0 25%,50% 0,100% 25%,100% 75%,50% 100%,0 75%);
+    background: deepskyblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.menu .hexagonArea .hexagon img{
+    width: 90px;
+}
+
+.menu .hexagonArea .hexagon h3{
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 10px;
+    font-size: 17px;
+    letter-spacing: 1px;
+    align-content: center;
+    justify-content: center;
+}
+
+.menu .hexagonArea .hexagon:hover{
+    background: lightblue;
+    transform: scale(0.8);
+}
