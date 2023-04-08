@@ -271,6 +271,47 @@ class Queries:
     }
     """
 
+    #Get book by isbn
+    getBook = """
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
+    WHERE {
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
+        FILTER regex(?isbn, "replace", "i")
+    }
+    """
+
+    #Updates the book to the inverse of the current value
+    updateBook = """
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    DELETE {
+        ?book pred:has_seen ?has_seen .
+    }
+    INSERT {
+        ?book pred:has_seen ?new_has_seen .
+    }
+    WHERE {
+        ?book pred:has_isbn ?isbn .
+        ?book pred:has_seen ?has_seen .
+        BIND (IF(?has_seen = "true"^^xsd:boolean, "false"^^xsd:boolean, "true"^^xsd:boolean) AS ?new_has_seen)
+        FILTER regex(?isbn, "replace", "i")
+    }
+    """
+
     def __init__(self, endpoint, repo_name):
         self.endpoint = endpoint
         self.repo_name = repo_name
@@ -318,11 +359,13 @@ class Queries:
                 #check if the author is already in the list of authors
                 if i['author_name']['value'] not in authors:
                     #if not, add it
-                    authors= list[position]['author_name']+","+i['author_name']['value']
+                    authors= list[position]['author_name']+", "+i['author_name']['value']
+                    list[position]['author_name'] = authors
                 #check if the genre is already in the list of genres
                 if i['genre']['value'] not in genres:
                     #if not, add it
-                    genres= list[position]['genre']+","+i['genre']['value']
+                    genres= list[position]['genre']+", "+i['genre']['value']
+                    list[position]['genre'] = genres
 
             else:
                 dict = {}
@@ -333,9 +376,31 @@ class Queries:
                 dict['rating'] = i['rating']['value']
                 dict['reviews'] = i['reviews']['value']
                 dict['has_seen'] = i['has_seen']['value']
-                dict['language'] = i['language']['value']
+                if i['language']['value'] == 'eng':
+                    dict['language'] = 'English'
+                elif i['language']['value'] == 'spa':
+                    dict['language'] = 'Spanish'
+                elif i['language']['value'] == 'fre':
+                    dict['language'] = 'French'
+                elif i['language']['value'] == 'ger':
+                    dict['language'] = 'German'
+                elif i['language']['value'] == 'ita':
+                    dict['language'] = 'Italian'
+                elif i['language']['value'] == 'por':
+                    dict['language'] = 'Portuguese'
+                elif i['language']['value'] == 'tur':
+                    dict['language'] = 'Turkish'
+                elif i['language']['value'] == 'jpn':
+                    dict['language'] = 'Japanese'
+                elif i['language']['value'] == 'rus':
+                    dict['language'] = 'Russian'
+                elif i['language']['value'] == 'chi':
+                    dict['language'] = 'Chinese'
+                else:
+                    dict['language'] = i['language']['value']
+
                 dict['publisher_name'] = i['publisher_name']['value']
-                dict['publication_date'] = i['publication_date']['value']
+                dict['publication_date'] = i['publication_date']['value'].split('T')[0]
                 dict['isbn'] = i['isbn']['value']
 
                 list.append(dict)
@@ -376,6 +441,22 @@ class Queries:
     def get_seen_books(self):
         query = self.seenBooks
         return self.get_books(query)
+
+    def get_book_by_isbn(self, isbn):
+        string = str(isbn)
+        query = self.getBook.replace("replace", string)
+        dict = self.get_books(query)
+        if len(dict) > 0:
+            return dict[0]
+        else:
+            return None
+
+    def update_seen(self, isbn):
+        string = str(isbn)
+        query = self.updateBook.replace("replace", string)
+        self.db.update(query)
+
+
 
 
 

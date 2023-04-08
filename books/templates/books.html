@@ -1,17 +1,75 @@
-<!-- use base.html for the layout -->
-{% extends "base.html" %}
-
-{% block title %}{{ title }}{% endblock %}
+<head>
+    {% extends "base.html" %}
+    <!-- set the title -->
+    {% block title %}All Books{% endblock %}
+</head>
 
 {% block content %}
-    <!-- display all the books -->
-    {% for book in books %}
-        <div class="book">
-            <h2>{{ book.title }}</h2>
-            <p>{{ book.author_name }}</p>
-            <p>{{ book.isbn }}</p>
-            <p>{{ book.rating }}</p>
-            <p>{{ book.genre }}</p>
+    <!-- display all the books (title, author_name, genre, rating and isbn) in a table with pages (100 per page)
+    and a order by dropdown menu -->
+
+
+    <body>
+
+        <div class="container">
+            <h3 style="">
+                All Books
+            </h3>
+            <table id="mytableID" style="width:100%"
+                   class="table table-striped sampleTable">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Rating</th>
+                        <th>ISBN</th>
+                        <th>Readed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <!-- if clicked on the book title, go to the book page -->
+                        <tr>
+                            <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
+                            <td>{{ book.author_name }}</td>
+                            <td>{{ book.genre }}</td>
+                            <td>{{ book.rating }}</td>
+                            <td>{{ book.isbn }}</td>
+
+                            <!-- show if it has been read (book.has_seen=="true" with a checkbox, if the user clicks on it, it will be updated in the database (function in the views.py) -->
+                            <td>
+                                <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
+                                ">Mark as read</input>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    {% endfor %}
+
+        {% block scripts %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/static/js/fancyTable.js"></script>
+            <script src="/static/js/nav.js"></script>
+        {% endblock %}
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                //initialize the table
+                $('#mytableID').fancyTable({
+                    pagination: true,
+                    perPage: 30,
+                    searchable: true,
+                    globalSearch: true,
+                    sortable: true,
+                    globalSearchPlaceholder: 'Search',
+                });
+            });
+        </script>
+
+
+    </body>
+
 {% endblock %}

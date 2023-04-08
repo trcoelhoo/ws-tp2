@@ -45,16 +45,16 @@ $(".navbar-toggler").click(function(){
 jQuery(document).ready(function($){
 	// Get current path and find target link
 	var path = window.location.pathname.split("/")
-	path = path[path.length-2];
-	console.log(path);
-
+    console.log(path);
+	path = path[1];
+    console.log(path);
 	// Account for home page with empty path
 	if ( path == '' ) {
 		path = 'home';
 	}
 
 	var target = $('#navbarSupportedContent ul li a[href="'+"/"+path+"/"+'"]');
-	console.log(target);
+
 	// Add active class to target link
 	target.parent().addClass('active');
 });

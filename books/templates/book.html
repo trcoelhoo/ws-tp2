@@ -1,0 +1,29 @@
+{%  extends "base.html" %}
+<!-- go back button -->
+
+<!-- show book info -->
+{% block content %}
+    <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+    <h1>{{ book.title }}</h1>
+    <p>{{ book.description }}</p>
+    <p>Author: {{ book.author_name }}</p>
+    <p>ISBN: {{ book.isbn }}</p>
+    <p>Published by: {{ book.publisher_name }}</p>
+
+    <p>Published on: {{ book.publication_date }}</p>
+    <p>Category: {{ book.genre }}</p>
+    <p>Pages: {{ book.pages }}</p>
+    <p>Rating: {{ book.rating }}</p>
+    <p>Reviews: {{ book.reviews }}</p>
+
+
+    <p>Language: {{ book.language }}</p>
+    <p>Has seen: {{ book.has_seen }}</p>
+    <!-- checkbox to mark book as read (has_seen==True) -->
+    <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
+                                ">Mark as read</input>
+
+
+
+
+{% endblock %}

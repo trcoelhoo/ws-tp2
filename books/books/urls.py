@@ -21,7 +21,9 @@ from BooksApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', views.index, name='home'),
     path('books/', views.books, name='books'),
     path('home/', views.home, name='home'),
+    path('books/<int:book_isbn>/', views.book, name='book'),
+    path('update/<int:book_isbn>/', views.update, name='update'),
 ]

@@ -680,6 +680,8 @@ WHERE {
 
 """
 
+
+
 payload_query = {"query": query}
 res = accessor.sparql_select(body=payload_query,
 repo_name=repo_name)
