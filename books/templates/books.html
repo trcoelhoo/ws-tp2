@@ -32,8 +32,19 @@
                         <!-- if clicked on the book title, go to the book page -->
                         <tr>
                             <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
-                            <td>{{ book.author_name }}</td>
-                            <td>{{ book.genre }}</td>
+                            <!-- put all the authors from the list in a string -->
+                            <td>
+                                {% for author in book.author_name %}
+                                    <a href="/books/authors/{{ author }}">{{ author }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for genre in book.genre %}
+                                    <a href="/{{ genre }}">{{ genre }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
                             <td>{{ book.rating }}</td>
                             <td>{{ book.isbn }}</td>
 

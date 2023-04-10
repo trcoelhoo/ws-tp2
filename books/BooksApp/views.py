@@ -39,5 +39,11 @@ def update(request, book_isbn):
     url = '/books/' + str(book_isbn) + '/'
     return HttpResponseRedirect(url)
 
+def author(request, author_name):
+    q = Queries(endpoint, repo_name)
+    author = q.get_books_by_author(author_name)
+
+    return render(request, 'author.html', {'author': author, 'author_name': author_name})
+
 
 

@@ -312,6 +312,29 @@ class Queries:
     }
     """
 
+    #Get books from author
+    getBooksByAuthor = """
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
+    WHERE {
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
+        FILTER regex(?author_name, "replace", "i")
+    }
+    """
+
     def __init__(self, endpoint, repo_name):
         self.endpoint = endpoint
         self.repo_name = repo_name
@@ -354,25 +377,29 @@ class Queries:
                 position = isbn_list.index(i['isbn']['value'])
                 #get the list of authors
                 authors = list[position]['author_name']
+
                 #get the list of genres
                 genres = list[position]['genre']
                 #check if the author is already in the list of authors
                 if i['author_name']['value'] not in authors:
                     #if not, add it
-                    authors= list[position]['author_name']+", "+i['author_name']['value']
+                    authors.append(i['author_name']['value'])
                     list[position]['author_name'] = authors
+
                 #check if the genre is already in the list of genres
                 if i['genre']['value'] not in genres:
                     #if not, add it
-                    genres= list[position]['genre']+", "+i['genre']['value']
+                    genres.append(i['genre']['value'])
                     list[position]['genre'] = genres
 
             else:
                 dict = {}
                 dict['title'] = i['title']['value']
-                dict['author_name'] = i['author_name']['value']
+                # save a list of authors
+                dict['author_name'] = [i['author_name']['value']]
                 dict['pages'] = i['pages']['value']
-                dict['genre'] = i['genre']['value']
+                dict['genre'] = [i['genre']['value']]
+
                 dict['rating'] = i['rating']['value']
                 dict['reviews'] = i['reviews']['value']
                 dict['has_seen'] = i['has_seen']['value']
@@ -455,6 +482,12 @@ class Queries:
         string = str(isbn)
         query = self.updateBook.replace("replace", string)
         self.db.update(query)
+
+    def get_books_by_author(self, author):
+        string = str(author)
+        query = self.getBooksByAuthor.replace("replace", string)
+        return self.get_books(query)
+
 
 
 

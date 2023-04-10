@@ -1,0 +1,15 @@
+{%  extends "base.html" %}
+
+<!-- Show all the books from the author -->
+{% block content %}
+    <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+    <h1>{{ author_name }}</h1>
+    <ul>
+        {% for book in author %}
+            <a href="/books/{{ book.isbn }}">
+                <li>{{ book.title }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
