@@ -1,4 +1,4 @@
-from BooksApp.GraphDB import GraphDB
+from .GraphDB import GraphDB
 
 
 class Queries:
