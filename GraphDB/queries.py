@@ -1,6 +1,7 @@
 import json
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
+
 endpoint = "http://localhost:7200"
 repo_name = "books"
 client = ApiClient(endpoint=endpoint)
