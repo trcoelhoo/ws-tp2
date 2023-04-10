@@ -161,4 +161,4 @@ cython_debug/
 
 # databases to ignore
 books/db.sqlite3
-GraphDB/graphdb-data/graphdb-data
+GraphDB/graphdb-data
