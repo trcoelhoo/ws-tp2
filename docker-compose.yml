@@ -21,7 +21,10 @@ services:
         -Dgraphdb.append.request.id.headers=true
         -Dreuse.vars.in.subselects=true
     ports:
-      - 7201:7200
-      - 7301:7300
+      - "${GRAPHDB_LOCAL_PORT}:7200"
+      - "${GRAPHDB_LOCAL_PORT_02}:7300"
     volumes:
       - ./GraphDB/graphdb-data:/opt/graphdb/home
+
+volumes:
+  graphdb-data:
