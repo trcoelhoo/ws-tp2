@@ -1,18 +1,18 @@
 {
   "import.server" : { },
   "import.local" : {
-    "books;;books.nt" : {
-      "name" : "books.nt",
+    "books;;new.nt" : {
+      "name" : "new.nt",
       "status" : "DONE",
-      "message" : "Imported successfully in 10s.",
+      "message" : "Imported successfully in 12s.",
       "context" : "",
       "replaceGraphs" : [ ],
-      "baseURI" : "file:/uploaded/generated/books.nt",
+      "baseURI" : "file:/uploaded/generated/new.nt",
       "forceSerial" : false,
       "type" : "file",
       "format" : null,
-      "data" : "22a43cea-7bc3-46b6-8c66-9eed641b1c09",
-      "timestamp" : 1681226741461,
+      "data" : "8336acd1-b30b-47b3-ae06-de84f5f37e74",
+      "timestamp" : 1681230939302,
       "parserSettings" : {
         "preserveBNodeIds" : false,
         "failOnUnknownDataTypes" : false,
@@ -23,7 +23,7 @@
         "normalizeLanguageTags" : false,
         "stopOnError" : true
       },
-      "requestIdHeadersToForward" : " X-Request-Id: c05c50aa-3e78-564f-961c-005811d4f170"
+      "requestIdHeadersToForward" : " X-Request-Id: 3918e4e0-edd1-59c3-a681-ba1f0a1a8765"
     }
   },
   "properties" : {

@@ -36,9 +36,23 @@ class Queries:
     goodBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_genre "good" .
+        
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
@@ -49,6 +63,26 @@ class Queries:
     SELECT (COUNT(?book) AS ?count)
     WHERE {
         ?book pred:has_genre "bad" .
+    }
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
+    WHERE {
+        ?book pred:has_genre "bad" .
+        
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
@@ -310,7 +344,7 @@ class Queries:
     }
     """
 
-    #Get books from author
+    # Get books from author
     getBooksByAuthor = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -364,73 +398,66 @@ class Queries:
 
     def get_books(self, query):
         response = self.db.query(query)
-        list = []
-        isbn_list = []
-        for i in response:
+        books = dict()
+        for elem in response:
+            isbn = elem['isbn']['value']
+            # check if the book is already in the list and if it is, add the author to the list of
+            # authors and the genre to the list of genres if it is not already there
+            if isbn in books:
+                author = elem['author_name']['value']
+                genre = elem['genre']['value']
 
-            # check if the book is already in the list and if it is, add the author to the list of authors and the genre to the list of genres if it is not already there
-            if i['isbn']['value'] in isbn_list:
-                # get position of the book in the list
-                position = isbn_list.index(i['isbn']['value'])
-                # get the list of authors
-                authors = list[position]['author_name']
-
-                #get the list of genres
-                genres = list[position]['genre']
                 # check if the author is already in the list of authors
-                if i['author_name']['value'] not in authors:
-                    #if not, add it
-                    authors.append(i['author_name']['value'])
-                    list[position]['author_name'] = authors
+                if author not in books[isbn]['author_name']:
+                    books[isbn]['author_name'].append(author)
 
-                #check if the genre is already in the list of genres
-                if i['genre']['value'] not in genres:
-                    #if not, add it
-                    genres.append(i['genre']['value'])
-                    list[position]['genre'] = genres
+                # check if the genre is already in the list of genres
+                if genre not in books[isbn]['genre']:
+                    books[isbn]['genre'].append(genre)
 
             else:
-                dict = {}
-                dict['title'] = i['title']['value']
-                # save a list of authors
-                dict['author_name'] = [i['author_name']['value']]
-                dict['pages'] = i['pages']['value']
-                dict['genre'] = [i['genre']['value']]
+                book_info = dict()
+                book_info['isbn'] = isbn
+                book_info['title'] = elem['title']['value']
+                book_info['pages'] = elem['pages']['value']
+                book_info['rating'] = elem['rating']['value']
+                book_info['reviews'] = elem['reviews']['value']
+                book_info['has_seen'] = elem['has_seen']['value']
+                book_info['publisher_name'] = elem['publisher_name']['value']
 
-                dict['rating'] = i['rating']['value']
-                dict['reviews'] = i['reviews']['value']
-                dict['has_seen'] = i['has_seen']['value']
-                if i['language']['value'] == 'eng':
-                    dict['language'] = 'English'
-                elif i['language']['value'] == 'spa':
-                    dict['language'] = 'Spanish'
-                elif i['language']['value'] == 'fre':
-                    dict['language'] = 'French'
-                elif i['language']['value'] == 'ger':
-                    dict['language'] = 'German'
-                elif i['language']['value'] == 'ita':
-                    dict['language'] = 'Italian'
-                elif i['language']['value'] == 'por':
-                    dict['language'] = 'Portuguese'
-                elif i['language']['value'] == 'tur':
-                    dict['language'] = 'Turkish'
-                elif i['language']['value'] == 'jpn':
-                    dict['language'] = 'Japanese'
-                elif i['language']['value'] == 'rus':
-                    dict['language'] = 'Russian'
-                elif i['language']['value'] == 'chi':
-                    dict['language'] = 'Chinese'
-                else:
-                    dict['language'] = i['language']['value']
+                book_info['genre'] = [elem['genre']['value']]
+                book_info['author_name'] = [elem['author_name']['value']]
+                book_info['language'] = self.__get_language(elem['language']['value'])
+                book_info['publication_date'] = elem['publication_date']['value'].split('T')[0]
 
-                dict['publisher_name'] = i['publisher_name']['value']
-                dict['publication_date'] = i['publication_date']['value'].split('T')[0]
-                dict['isbn'] = i['isbn']['value']
+                books[isbn] = book_info
 
-                list.append(dict)
-                isbn_list.append(i['isbn']['value'])
+        books = [books[isbn] for isbn in books]
+        return books
 
-        return list
+    def __get_language(self, language):
+        if language == 'eng':
+            return 'English'
+        elif language == 'spa':
+            return 'Spanish'
+        elif language == 'fre':
+            return 'French'
+        elif language == 'ger':
+            return 'German'
+        elif language == 'ita':
+            return 'Italian'
+        elif language == 'por':
+            return 'Portuguese'
+        elif language == 'tur':
+            return 'Turkish'
+        elif language == 'jpn':
+            return 'Japanese'
+        elif language == 'rus':
+            return 'Russian'
+        elif language == 'chi':
+            return 'Chinese'
+        else:
+            return language
 
     def get_short_books(self):
         return self.get_books(self.shortBooks)
@@ -484,4 +511,3 @@ class Queries:
         string = str(author)
         query = self.getBooksByAuthor.replace("replace", string)
         return self.get_books(query)
-

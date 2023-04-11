@@ -14,7 +14,6 @@ def index(request):
 def books(request):
     q = Queries(endpoint, repo_name)
     books = q.get_all_books()
-
     return render(request, 'books.html', {'books': books})
 
 
@@ -50,12 +49,10 @@ def update(request, book_isbn):
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
     author = q.get_books_by_author(author_name)
-
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()
-
-    return render(request, 'goods.html')
+    return render(request, 'goods.html', {"books": good_books})

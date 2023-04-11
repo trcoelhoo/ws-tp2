@@ -13,7 +13,6 @@ PREFIX books: <http://books.com/books/>
 PREFIX pred: <http://books.com/preds/>
 SELECT
     ?book
-
 WHERE {
     books:1 pred:has_title ?title .
     ?book pred:has_title ?title .
