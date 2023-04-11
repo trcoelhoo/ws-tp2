@@ -407,25 +407,51 @@ class Queries:
         response = self.db.query(self.nShortBooks)
         return response[0]['count']['value']
 
+    def get_short_books(self):
+        return self.get_books(self.shortBooks)
+
     def get_number_good_books(self):
         response = self.db.query(self.nGoodBooks)
         return response[0]['count']['value']
+
+    def get_good_books(self):
+        return self.get_books(self.goodBooks)
 
     def get_number_bad_books(self):
         response = self.db.query(self.nBadBooks)
         return response[0]['count']['value']
 
+    def get_bad_books(self):
+        return self.get_books(self.badBooks)
+
     def get_number_long_books(self):
         response = self.db.query(self.nLongBooks)
         return response[0]['count']['value']
+
+    def get_long_books(self):
+        return self.get_books(self.longBooks)
 
     def get_number_popular_books(self):
         response = self.db.query(self.nPopularBooks)
         return response[0]['count']['value']
 
+    def get_popular_books(self):
+        return self.get_books(self.popularBooks)
+
     def get_number_books(self):
         response = self.db.query(self.nBooks)
         return response[0]['count']['value']
+
+    def get_all_books(self):
+        return self.get_books(self.allBooks)
+
+    def get_number_seen_books(self):
+        response = self.db.query(self.nSeenBooks)
+        return response[0]['count']['value']
+
+    def get_seen_books(self):
+        query = self.seenBooks
+        return self.get_books(query)
 
     def get_books(self, query):
         response = self.db.query(query)
@@ -490,38 +516,12 @@ class Queries:
         else:
             return language
 
-    def get_short_books(self):
-        return self.get_books(self.shortBooks)
-
-    def get_good_books(self):
-        return self.get_books(self.goodBooks)
-
-    def get_bad_books(self):
-        return self.get_books(self.badBooks)
-
-    def get_long_books(self):
-        return self.get_books(self.longBooks)
-
-    def get_popular_books(self):
-        return self.get_books(self.popularBooks)
-
-    def get_all_books(self):
-        return self.get_books(self.allBooks)
-
     def search_book(self, keyword):
         query = self.searchBook.replace("toSearch", keyword)
         return self.get_books(query)
 
     def search_year(self, year1, year2):
         query = self.searchYear.replace("year1", year1).replace("year2", year2)
-        return self.get_books(query)
-
-    def get_number_seen_books(self):
-        response = self.db.query(self.nSeenBooks)
-        return response[0]['count']['value']
-
-    def get_seen_books(self):
-        query = self.seenBooks
         return self.get_books(query)
 
     def get_book_by_isbn(self, isbn):

@@ -53,6 +53,14 @@ def author(request, author_name):
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
+def search_books(request):
+    q = Queries(endpoint, repo_name)
+    keyword = request.GET.get('keyword')
+    title = f"Results for: {keyword}"
+    books = q.search_book(keyword)
+    return render(request, 'books.html', {'title': title, "books": books})
+
+
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()
@@ -68,16 +76,21 @@ def bad_books(request):
 def popular_books(request):
     q = Queries(endpoint, repo_name)
     books = q.get_popular_books()
-    return render(request, 'categories.html', {"title": "Popular books", "books": books})
+    return render(request, 'books.html', {"title": "Popular books", "books": books})
 
 
 def long_books(request):
     q = Queries(endpoint, repo_name)
     books = q.get_long_books()
-    return render(request, 'categories.html', {"title": "Bad books", "books": books})
+    return render(request, 'books.html', {"title": "Long books", "books": books})
 
 
 def short_books(request):
     q = Queries(endpoint, repo_name)
-    bad_books = q.get_short_books()
-    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+    books = q.get_short_books()
+    return render(request, 'books.html', {"title": "Short books", "books": books})
+
+def seen_books(request):
+    q = Queries(endpoint, repo_name)
+    books = q.get_seen_books()
+    return render(request, 'books.html', {"title": "Seen books", "books": books})
