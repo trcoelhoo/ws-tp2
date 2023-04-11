@@ -56,13 +56,13 @@ def author(request, author_name):
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()
-    return render(request, 'categories.html', {"title": "Good books", "books": good_books})
+    return render(request, 'books.html', {"title": "Good books", "books": good_books})
 
 
 def bad_books(request):
     q = Queries(endpoint, repo_name)
     bad_books = q.get_bad_books()
-    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+    return render(request, 'books.html', {"title": "Bad Books", "books": bad_books})
 
 
 def popular_books(request):
