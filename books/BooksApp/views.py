@@ -3,10 +3,13 @@ from django.shortcuts import render
 from BooksApp.queries import Queries
 
 repo_name = 'books'
-endpoint = 'http://localhost:7200'
+port = 7201
+endpoint = f'http://localhost:{port}'
+
 
 def index(request):
     return render(request, 'base.html')
+
 
 def books(request):
     q = Queries(endpoint, repo_name)
@@ -14,23 +17,28 @@ def books(request):
 
     return render(request, 'books.html', {'books': books})
 
+
 def home(request):
-    q=Queries(endpoint, repo_name)
-    nBad= q.get_number_bad_books()
-    nGood= q.get_number_good_books()
-    nBooks= q.get_number_books()
+    q = Queries(endpoint, repo_name)
+    nBad = q.get_number_bad_books()
+    nGood = q.get_number_good_books()
+    nBooks = q.get_number_books()
     nShort = q.get_number_short_books()
     nLong = q.get_number_long_books()
     nPopular = q.get_number_popular_books()
     nSeen = q.get_number_seen_books()
 
-    return render(request, 'index.html', {'nBad': nBad, 'nGood': nGood, 'nBooks': nBooks, 'nShort': nShort, 'nLong': nLong, 'nPopular': nPopular, 'nSeen': nSeen})
+    return render(request, 'index.html',
+                  {'nBad': nBad, 'nGood': nGood, 'nBooks': nBooks, 'nShort': nShort, 'nLong': nLong,
+                   'nPopular': nPopular, 'nSeen': nSeen})
+
 
 def book(request, book_isbn):
     q = Queries(endpoint, repo_name)
     book = q.get_book_by_isbn(book_isbn)
 
     return render(request, 'book.html', {'book': book})
+
 
 def update(request, book_isbn):
     q = Queries(endpoint, repo_name)
@@ -46,4 +54,8 @@ def author(request, author_name):
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
+def good_books(request):
+    q = Queries(endpoint, repo_name)
+    good_books = q.get_good_books()
 
+    return render(request, 'goods.html')
