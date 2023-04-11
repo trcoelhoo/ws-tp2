@@ -67,17 +67,17 @@ def bad_books(request):
 
 def popular_books(request):
     q = Queries(endpoint, repo_name)
-    bad_books = q.get_bad_books()
-    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+    books = q.get_popular_books()
+    return render(request, 'categories.html', {"title": "Popular books", "books": books})
 
 
 def long_books(request):
     q = Queries(endpoint, repo_name)
-    bad_books = q.get_bad_books()
-    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+    books = q.get_long_books()
+    return render(request, 'categories.html', {"title": "Bad books", "books": books})
 
 
 def short_books(request):
     q = Queries(endpoint, repo_name)
-    bad_books = q.get_bad_books()
+    bad_books = q.get_short_books()
     return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})

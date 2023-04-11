@@ -27,7 +27,9 @@ urlpatterns = [
     path('books/<str:book_isbn>/', views.book, name='book'),
     path('update/<str:book_isbn>/', views.update, name='update'),
     path('books/authors/<str:author_name>/', views.author, name='author'),
-    path('books/good/', views.good_books, name='good_books'),
-    path('books/bad/', views.bad_books, name='bad_books'),
-
+    path('categories/good/', views.good_books, name='good_books'),
+    path('categories/bad/', views.bad_books, name="bad_books"),
+    path('categories/popular/', views.popular_books, name="popular_books"),
+    path('categories/long/', views.long_books, name="long_books"),
+    path('categories/short/', views.long_books, name="short_books")
 ]
