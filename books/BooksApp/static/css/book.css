@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Set default font and color */
+body {
+  font-family: 'Poppins', sans-serif;
+  color: black;
+}
+
+
+/* Style the go back button */
+.back_button {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0px;
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.back_button input[type=button] {
+  background-color: #5161ce;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.back_button input[type=button]:hover {
+  background-color: darkblue;
+  transform: translateY(-2px);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Book info styles */
+.book {
+  background-color: white;
+  border: 2px solid #5161ce;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 2rem auto;
+  max-width: 800px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.book h1 {
+  font-size: 2.5rem;
+  color: black;
+  margin: 0;
+}
+
+.book p {
+  font-size: 1.2rem;
+  color: black;
+  margin: 0.5rem 0;
+}
+
+.book p a {
+  color: blue;
+  text-decoration: none;
+}
+
+.book .has_seen {
+  margin-top: 1rem;
+}
+
+.book .has_seen p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.book .has_seen input[type=checkbox] {
+  appearance: none;
+  background-color: white;
+  border: 2px solid blue;
+  border-radius: 50%;
+  height: 1.2rem;
+  width: 1.2rem;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.book .has_seen input[type=checkbox]:checked::after {
+  content: "\2714";
+  position: absolute;
+  top: -0.15rem;
+  left: 0.35rem;
+  color: blue;
+  font-size: 1.2rem;
+}
+
+.book .has_seen input[type=checkbox]:hover {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+}
+
+.book .rating {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.book .rating p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  display: inline-block;
+}
+
+.book .rating img {
+  height: 2.2rem;
+  width: 2.2rem;
+  margin-left: 0.5rem;
+  display: inline-block;
+  margin-bottom: 0.6rem;
+
+}

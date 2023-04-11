@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!-- use base.html for the layout -->
 <head>
     {% extends "base.html" %}
@@ -17,19 +18,19 @@
     <div class="menu">
         <div class = "hexagonArea first">
             <div class="hexagon">
-                <a href="/books/good">
+                <a href="/good">
                     <img src="/static/images/good.webp" alt="good books" width="100" height="100">
                 </a>
                 <h3>Good books: {{ nGood }}</h3>
             </div>
             <div class="hexagon">
-                <a href="/books/bad">
+                <a href="/bad">
                     <img src="/static/images/bad.webp" alt="bad books" width="100" height="100">
                 </a>
                 <h3>Bad books: {{ nBad }}</h3>
             </div>
             <div class="hexagon">
-                <a href="/books/popular">
+                <a href="/popular">
                     <img src="/static/images/popular.webp" alt="popular books" width="100" height="100">
                 </a>
                 <h3>Popular: {{ nPopular }}</h3>
@@ -45,14 +46,14 @@
         </div>
         <div class="hexagonArea last">
             <div class="hexagon">
-                <a href="/books/long">
-                    <img src="/static/images/long.png" alt="long books" width="100" height="100">
+                <a href="/long">
+                    <img src="/static/images/long.webp" alt="long books" width="100" height="100">
                 </a>
                 <h3>Long books: {{ nLong }}</h3>
             </div>
             <div class="hexagon">
-                <a href="/books/short">
-                    <img src="/static/images/short.png" alt="short books" width="100" height="100">
+                <a href="/short">
+                    <img src="/static/images/short.webp" alt="short books" width="100" height="100">
                 </a>
                 <h3>Short books: {{ nShort }}</h3>
             </div>

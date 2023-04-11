@@ -312,27 +312,45 @@ class Queries:
     }
     """
 
-    #Get books from author
+    #Get books from author and the rest of the authors from the same books
     getBooksByAuthor = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
+    
+    SELECT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn ?co_author_name
     WHERE {
-        ?book pred:has_title ?title .
-        ?book pred:written_by ?author .
-        ?author pred:has_name ?author_name .
-        ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
-        ?book pred:has_rating ?rating .
-        ?book pred:rated_by ?reviews .
-        ?book pred:has_seen ?has_seen .
-        ?book pred:has_language ?language .
-        ?book pred:published_by ?publisher .
-        ?publisher pred:has_name ?publisher_name .
-        ?book pred:published_on ?publication_date .
-        ?book pred:has_isbn ?isbn .
-        FILTER regex(?author_name, "replace", "i")
+      # Subquery to find all books written by J.K. Rowling
+      {
+        SELECT ?book
+        WHERE {
+          ?book pred:written_by ?author .
+          ?author pred:has_name "replace" .
+        }
+      }
+    
+      # Retrieve the details of the books and their co-authors
+      ?book pred:has_title ?title .
+      ?book pred:written_by ?author .
+      ?author pred:has_name ?author_name .
+      ?book pred:has_pages ?pages .
+      ?book pred:has_genre ?genre .
+      ?book pred:has_rating ?rating .
+      ?book pred:rated_by ?reviews .
+      ?book pred:has_seen ?has_seen .
+      ?book pred:has_language ?language .
+      ?book pred:published_by ?publisher .
+      ?publisher pred:has_name ?publisher_name .
+      ?book pred:published_on ?publication_date .
+      ?book pred:has_isbn ?isbn .
+    
+      # Retrieve the names of all co-authors for the book
+      OPTIONAL {
+        ?book pred:written_by ?co_author .
+        ?co_author pred:has_name ?co_author_name .
+        FILTER(?co_author_name != ?author_name)
+      }
     }
+    
     """
 
     def __init__(self, endpoint, repo_name):
@@ -370,7 +388,6 @@ class Queries:
         list = []
         isbn_list = []
         for i in response:
-
             # check if the book is already in the list and if it is, add the author to the list of authors and the genre to the list of genres if it is not already there
             if i['isbn']['value'] in isbn_list:
                 #get position of the book in the list
@@ -432,7 +449,6 @@ class Queries:
 
                 list.append(dict)
                 isbn_list.append(i['isbn']['value'])
-
         return list
 
     def get_short_books(self):

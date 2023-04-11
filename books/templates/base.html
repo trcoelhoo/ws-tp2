@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
+    <link rel="stylesheet"  href="/static/css/book.css">
+    <link rel="stylesheet"  href="/static/css/author.css">
     <nav class="navbar navbar-expand-custom navbar-mainbg">
         <a class="navbar-brand navbar-logo" href={% url 'home' %}>Books</a>
         <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,8 +44,9 @@
 
     {% block scripts %}
         <!-- js -->
-        <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+
         <script src="{% static 'js/nav.js' %}" type="text/javascript"></script>
     {% endblock %}
 </body>

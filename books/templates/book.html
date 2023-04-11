@@ -1,29 +1,60 @@
-{%  extends "base.html" %}
-<!-- go back button -->
+<!DOCTYPE html>
+<head>
+    {%  extends "base.html" %}
+    <title>{{ book.title }}</title>
 
+
+</head>
 <!-- show book info -->
 {% block content %}
-    <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
-    <h1>{{ book.title }}</h1>
-    <p>{{ book.description }}</p>
-    <p>Author: {{ book.author_name }}</p>
-    <p>ISBN: {{ book.isbn }}</p>
-    <p>Published by: {{ book.publisher_name }}</p>
+    <body>
+    <!-- go back button -->
+    <div class="row">
+        <div class="back_button">
+            <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        </div>
+    </div>
 
-    <p>Published on: {{ book.publication_date }}</p>
-    <p>Category: {{ book.genre }}</p>
-    <p>Pages: {{ book.pages }}</p>
-    <p>Rating: {{ book.rating }}</p>
-    <p>Reviews: {{ book.reviews }}</p>
+    <!-- show book info -->
+    <div class="book">
+        <div class="book title">
+            <h1>{{ book.title }}</h1>
+        </div>
+        <div class="book info">
+            <!-- all authors with link to their page -->
+            <p>Author: {% for author in book.author_name %}
+                <!-- put "," between authors -->
+                {% if forloop.counter > 1 %}, {% endif %}
+                <a href="/books/authors/{{ author }}">{{ author}}</a>
+                {% endfor %}
+            </p>
+            <p>ISBN: {{ book.isbn }}</p>
+            <p>Published by: {{ book.publisher_name }}</p>
+            <p>Published on: {{ book.publication_date }}</p>
+            <!-- all genres with link to their page -->
+            <p>Category: {% for genre in book.genre %}
+                <!-- put "," between genres -->
+                {% if forloop.counter > 1 %}, {% endif %}
+                <a href="/{{ genre }}">{{ genre}}</a>
+                {% endfor %}
+            </p>
+            <p>Pages: {{ book.pages }}</p>
+            <p>Language: {{ book.language }}</p>
+            <div class="book rating">
+                <p>Rating: {{ book.rating }}</p>
+                <img src="/static/images/star.webp" alt="rating" >
+                <p> ({{ book.reviews }} reviews)</p>
+            </div>
 
 
-    <p>Language: {{ book.language }}</p>
-    <p>Has seen: {{ book.has_seen }}</p>
-    <!-- checkbox to mark book as read (has_seen==True) -->
-    <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
-                                ">Mark as read</input>
-
-
+            <div class="book has_seen">
+                <p>Have you read this book?</p>
+                <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
+                                            ">Mark as read</input>
+            </div>
+        </div>
+    </div>
+    </body>
 
 
 {% endblock %}

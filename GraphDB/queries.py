@@ -680,6 +680,46 @@ WHERE {
 
 """
 
+#Get books from J.K. Rowling (author name) and the rest of the authors from the same book
+query = """
+PREFIX books: <http://books.com/books/>
+PREFIX pred: <http://books.com/preds/>
+
+SELECT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn ?co_author_name
+WHERE {
+  # Subquery to find all books written by J.K. Rowling
+  {
+    SELECT ?book
+    WHERE {
+      ?book pred:written_by ?author .
+      ?author pred:has_name "J.K. Rowling" .
+    }
+  }
+
+  # Retrieve the details of the books and their co-authors
+  ?book pred:has_title ?title .
+  ?book pred:written_by ?author .
+  ?author pred:has_name ?author_name .
+  ?book pred:has_pages ?pages .
+  ?book pred:has_genre ?genre .
+  ?book pred:has_rating ?rating .
+  ?book pred:rated_by ?reviews .
+  ?book pred:has_seen ?has_seen .
+  ?book pred:has_language ?language .
+  ?book pred:published_by ?publisher .
+  ?publisher pred:has_name ?publisher_name .
+  ?book pred:published_on ?publication_date .
+  ?book pred:has_isbn ?isbn .
+
+  # Retrieve the names of all co-authors for the book
+  OPTIONAL {
+    ?book pred:written_by ?co_author .
+    ?co_author pred:has_name ?co_author_name .
+    FILTER(?co_author_name != ?author_name)
+  }
+}
+"""
+
 
 
 payload_query = {"query": query}

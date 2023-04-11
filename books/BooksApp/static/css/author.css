@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Set default font and color */
+body {
+  font-family: 'Poppins', sans-serif;
+  color: black;
+}
+
+.author_name {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0px;
+  margin-top: 30px;
+  margin-left: 30px;
+}
+/* Center the table and give it a border */
+.author.books {
+  display: flex;
+  justify-content: center;
+}
+
+.author.table {
+  border: 1px solid black;
+  padding: 20px;
+  width: 80%;
+}
+
+/* Style the table headers */
+.author.table th {
+  background-color: #5161ce;
+  color: white;
+  padding: 10px;
+}
+
+/* Style the table cells */
+.author.table td {
+  padding: 10px;
+}
+
+/* Alternate row colors for readability */
+.author.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect on table rows */
+.author.table tr:hover {
+  background-color: #ddd;
+}
+
+/* Style links */
+.author.table a {
+  color: #5161ce;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Link hover effect */
+.author.table a:hover {
+  color: #0056b3;
+}
+
+/* Style the go back button */
+.back_button {
+  margin-top: 10px;
+}
+
+.back_button input[type=button] {
+
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.back_button input[type=button]:hover {
+  background-color: #0056b3;
+}
+
+/* Style the table header */
+.author.table h1 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
