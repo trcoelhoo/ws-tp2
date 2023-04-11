@@ -24,9 +24,4 @@ RUN apk add --no-cache bash curl util-linux procps net-tools busybox-extras wget
 
 ENV PATH=${GRAPHDB_INSTALL_DIR}/bin:$PATH
 
-CMD ["-Dgraphdb.home=/opt/graphdb/home"]
-
 ENTRYPOINT ["/opt/graphdb/dist/bin/graphdb"]
-
-EXPOSE 7200
-EXPOSE 7300
