@@ -64,6 +64,16 @@ class Queries:
     WHERE {
         ?book pred:has_genre "bad" .
     }
+    """
+
+    # Get bad books
+    badBooks = """
+    PREFIX books: <http://books.com/books/>
+    PREFIX pred: <http://books.com/preds/>
+    SELECT ?book
+    WHERE {
+        ?book pred:has_genre  .
+    }
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
@@ -83,16 +93,6 @@ class Queries:
         ?publisher pred:has_name ?publisher_name .
         ?book pred:published_on ?publication_date .
         ?book pred:has_isbn ?isbn .
-    }
-    """
-
-    # Get bad books
-    badBooks = """
-    PREFIX books: <http://books.com/books/>
-    PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
-    WHERE {
-        ?book pred:has_genre "bad" .
     }
     """
 

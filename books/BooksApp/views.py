@@ -3,7 +3,7 @@ from django.shortcuts import render
 from BooksApp.queries import Queries
 
 repo_name = 'books'
-port = 7201
+port = 7200
 endpoint = f'http://localhost:{port}'
 
 
@@ -46,6 +46,7 @@ def update(request, book_isbn):
     url = '/books/' + str(book_isbn) + '/'
     return HttpResponseRedirect(url)
 
+
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
     author = q.get_books_by_author(author_name)
@@ -55,4 +56,28 @@ def author(request, author_name):
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()
-    return render(request, 'goods.html', {"books": good_books})
+    return render(request, 'categories.html', {"title": "Good books", "books": good_books})
+
+
+def bad_books(request):
+    q = Queries(endpoint, repo_name)
+    bad_books = q.get_bad_books()
+    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+
+
+def popular_books(request):
+    q = Queries(endpoint, repo_name)
+    bad_books = q.get_bad_books()
+    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+
+
+def long_books(request):
+    q = Queries(endpoint, repo_name)
+    bad_books = q.get_bad_books()
+    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
+
+
+def short_books(request):
+    q = Queries(endpoint, repo_name)
+    bad_books = q.get_bad_books()
+    return render(request, 'categories.html', {"title": "Bad books", "books": bad_books})
