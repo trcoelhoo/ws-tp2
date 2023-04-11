@@ -12,9 +12,25 @@
 {% block content %}
 
 
-<!-- display on an hexagon form the 6 icons -->
-<body>
+    <!-- display on an hexagon form the 6 icons -->
+    <body>
+    <br/><br/>
+    <div class="container">
+        <form method="GET" target="{% url 'search_books' %}">
+            <div class="input-group mb-3">
+            <input type="text" id="keyword_bar" class="form-control" placeholder="Keyword" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button
+                        class="btn btn-outline-secondary" type="submit"
+                >
+                    Search
+                </button>
+            </div>
+        </div>
+        </form>
+    </div>
     <div class="menu">
+
         <div class = "hexagonArea first">
             <div class="hexagon">
                 <a href="{% url 'good_books' %}">
@@ -65,7 +81,7 @@
 
         </div>
     </div>
-</body>
+    </body>
 
 
 
