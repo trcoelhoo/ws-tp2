@@ -31,5 +31,5 @@ urlpatterns = [
     path('categories/bad/', views.bad_books, name="bad_books"),
     path('categories/popular/', views.popular_books, name="popular_books"),
     path('categories/long/', views.long_books, name="long_books"),
-    path('categories/short/', views.long_books, name="short_books"),
+    path('categories/short/', views.long_books, name="short_books")
 ]

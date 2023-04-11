@@ -62,7 +62,7 @@ def good_books(request):
 def bad_books(request):
     q = Queries(endpoint, repo_name)
     bad_books = q.get_bad_books()
-    return render(request, 'books.html', {"title": "Bad books", "books": bad_books})
+    return render(request, 'books.html', {"title": "Bad Books", "books": bad_books})
 
 
 def popular_books(request):
