@@ -16,9 +16,22 @@ class Queries:
     shortBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_genre "short" .
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
@@ -39,7 +52,6 @@ class Queries:
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_genre "good" .
-        
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
@@ -70,16 +82,9 @@ class Queries:
     badBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
-    WHERE {
-        ?book pred:has_genre  .
-    }
-    PREFIX books: <http://books.com/books/>
-    PREFIX pred: <http://books.com/preds/>
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_genre "bad" .
-        
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
@@ -110,9 +115,22 @@ class Queries:
     longBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_genre "long" .
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
@@ -130,9 +148,22 @@ class Queries:
     popularBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    SELECT ?book
+    SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_genre "popular" .
+        ?book pred:has_title ?title .
+        ?book pred:written_by ?author .
+        ?author pred:has_name ?author_name .
+        ?book pred:has_pages ?pages .
+        ?book pred:has_genre ?genre .
+        ?book pred:has_rating ?rating .
+        ?book pred:rated_by ?reviews .
+        ?book pred:has_seen ?has_seen .
+        ?book pred:has_language ?language .
+        ?book pred:published_by ?publisher .
+        ?publisher pred:has_name ?publisher_name .
+        ?book pred:published_on ?publication_date .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
