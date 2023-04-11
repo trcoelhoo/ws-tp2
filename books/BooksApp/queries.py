@@ -2,8 +2,7 @@ from .GraphDB import GraphDB
 
 
 class Queries:
-
-    #Get the number of short books (less than 1000 pages)
+    # Get the number of short books (less than 1000 pages)
     nShortBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -13,7 +12,7 @@ class Queries:
     }
     """
 
-    #Get short books
+    # Get short books
     shortBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -23,7 +22,7 @@ class Queries:
     }
     """
 
-    #Get the number of books with a rating of 4.5 or higher
+    # Get the number of books with a rating of 4.5 or higher
     nGoodBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -33,7 +32,7 @@ class Queries:
     }
     """
 
-    #Get good books
+    # Get good books
     goodBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -43,7 +42,7 @@ class Queries:
     }
     """
 
-    #Get the number of books with a rating lower than 4.5
+    # Get the number of books with a rating lower than 4.5
     nBadBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -53,7 +52,7 @@ class Queries:
     }
     """
 
-    #Get bad books
+    # Get bad books
     badBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -63,7 +62,7 @@ class Queries:
     }
     """
 
-    #Get the number of books long books (more than 1000 pages)
+    # Get the number of books long books (more than 1000 pages)
     nLongBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -73,7 +72,7 @@ class Queries:
     }
     """
 
-    #Get long books
+    # Get long books
     longBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -83,7 +82,7 @@ class Queries:
     }
     """
 
-    #Get the number of popular books (more than 10000 ratings)
+    # Get the number of popular books (more than 10000 ratings)
     nPopularBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -93,7 +92,7 @@ class Queries:
     }
     """
 
-    #Get popular books
+    # Get popular books
     popularBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -103,7 +102,7 @@ class Queries:
     }
     """
 
-    #Get the number of books
+    # Get the number of books
     nBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -113,7 +112,7 @@ class Queries:
     }
     """
 
-    #Get the number of books seen
+    # Get the number of books seen
     nSeenBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -123,7 +122,7 @@ class Queries:
     }
     """
 
-    #Get seen books
+    # Get seen books
     seenBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -146,8 +145,7 @@ class Queries:
     }
     """
 
-
-    #Get all books
+    # Get all books
     allBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -169,7 +167,7 @@ class Queries:
     }
     """
 
-    #Search for a book by title, author, isbn or publisher
+    # Search for a book by title, author, isbn or publisher
     searchBook = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -247,7 +245,7 @@ class Queries:
     }
     """
 
-    #Search by year
+    # Search by year
     searchYear = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -271,7 +269,7 @@ class Queries:
     }
     """
 
-    #Get book by isbn
+    # Get book by isbn
     getBook = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -294,7 +292,7 @@ class Queries:
     }
     """
 
-    #Updates the book to the inverse of the current value
+    # Updates the book to the inverse of the current value
     updateBook = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
@@ -340,7 +338,6 @@ class Queries:
         self.repo_name = repo_name
         self.db = GraphDB(endpoint, repo_name)
 
-
     def get_number_short_books(self):
         response = self.db.query(self.nShortBooks)
         return response[0]['count']['value']
@@ -373,14 +370,14 @@ class Queries:
 
             # check if the book is already in the list and if it is, add the author to the list of authors and the genre to the list of genres if it is not already there
             if i['isbn']['value'] in isbn_list:
-                #get position of the book in the list
+                # get position of the book in the list
                 position = isbn_list.index(i['isbn']['value'])
-                #get the list of authors
+                # get the list of authors
                 authors = list[position]['author_name']
 
                 #get the list of genres
                 genres = list[position]['genre']
-                #check if the author is already in the list of authors
+                # check if the author is already in the list of authors
                 if i['author_name']['value'] not in authors:
                     #if not, add it
                     authors.append(i['author_name']['value'])
@@ -487,14 +484,4 @@ class Queries:
         string = str(author)
         query = self.getBooksByAuthor.replace("replace", string)
         return self.get_books(query)
-
-
-
-
-
-
-
-
-
-
 
