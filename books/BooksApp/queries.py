@@ -445,6 +445,14 @@ class Queries:
     def get_all_books(self):
         return self.get_books(self.allBooks)
 
+    def get_number_seen_books(self):
+        response = self.db.query(self.nSeenBooks)
+        return response[0]['count']['value']
+
+    def get_seen_books(self):
+        query = self.seenBooks
+        return self.get_books(query)
+
     def get_books(self, query):
         response = self.db.query(query)
         books = dict()
@@ -514,14 +522,6 @@ class Queries:
 
     def search_year(self, year1, year2):
         query = self.searchYear.replace("year1", year1).replace("year2", year2)
-        return self.get_books(query)
-
-    def get_number_seen_books(self):
-        response = self.db.query(self.nSeenBooks)
-        return response[0]['count']['value']
-
-    def get_seen_books(self):
-        query = self.seenBooks
         return self.get_books(query)
 
     def get_book_by_isbn(self, isbn):
