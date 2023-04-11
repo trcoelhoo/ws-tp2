@@ -55,7 +55,7 @@ def author(request, author_name):
 
 def search_books(request):
     q = Queries(endpoint, repo_name)
-    keyword = request.GET.get('keyword')
+    keyword = request.GET.get('keyword', '')
     title = f"Results for: {keyword}"
     books = q.search_book(keyword)
     return render(request, 'books.html', {'title': title, "books": books})

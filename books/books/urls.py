@@ -35,5 +35,5 @@ urlpatterns = [
     path('categories/long/', views.long_books, name="long_books"),
     path('categories/short/', views.long_books, name="short_books"),
     path('categories/seen/', views.seen_books, name="seen_books"),
-    path('books/search/', views.search_books, name="search_books"),
+    path('books/search/(?P<keyword>w+)$', views.search_books, name="search_books"),
 ]
