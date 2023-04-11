@@ -517,6 +517,8 @@ class Queries:
             return language
 
     def search_book(self, keyword):
+        if keyword == '':
+            return {}
         query = self.searchBook.replace("toSearch", keyword)
         return self.get_books(query)
 
