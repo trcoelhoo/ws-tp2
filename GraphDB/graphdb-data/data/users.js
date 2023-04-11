@@ -2,7 +2,7 @@
   "users" : {
     "admin" : {
       "username" : "admin",
-      "password" : "{bcrypt}$2a$10$xnBHOEKSjboCH4Rq5Dfaf.F6jMYbHR6w6DiMLynOlLKlqQKRS1dKq",
+      "password" : "{bcrypt}$2a$10$9kdzkcmMdHvwF4xlXOss8eBrzvsrTFgkrkW/k7kCGAdJX5kjd2GzC",
       "grantedAuthorities" : [ "ROLE_ADMIN" ],
       "appSettings" : {
         "DEFAULT_INFERENCE" : true,
@@ -11,7 +11,7 @@
         "IGNORE_SHARED_QUERIES" : false,
         "EXECUTE_COUNT" : true
       },
-      "dateCreated" : 1681146496729
+      "dateCreated" : 1681224654692
     }
   },
   "user_queries" : {

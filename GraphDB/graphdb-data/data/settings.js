@@ -4,15 +4,15 @@
     "books;;books.nt" : {
       "name" : "books.nt",
       "status" : "DONE",
-      "message" : "Imported successfully in 14s.",
+      "message" : "Imported successfully in 10s.",
       "context" : "",
       "replaceGraphs" : [ ],
       "baseURI" : "file:/uploaded/generated/books.nt",
       "forceSerial" : false,
       "type" : "file",
       "format" : null,
-      "data" : "fada8441-5837-4401-a9b5-cad4d451761c",
-      "timestamp" : 1681147043887,
+      "data" : "22a43cea-7bc3-46b6-8c66-9eed641b1c09",
+      "timestamp" : 1681226741461,
       "parserSettings" : {
         "preserveBNodeIds" : false,
         "failOnUnknownDataTypes" : false,
@@ -23,7 +23,7 @@
         "normalizeLanguageTags" : false,
         "stopOnError" : true
       },
-      "requestIdHeadersToForward" : " X-Request-Id: 3c2bce18-b4e9-5356-89c5-495c247358f5"
+      "requestIdHeadersToForward" : " X-Request-Id: c05c50aa-3e78-564f-961c-005811d4f170"
     }
   },
   "properties" : {
