@@ -12,6 +12,10 @@
     <body>
 
         <div class="container">
+        <br>
+            <button type="button" class="btn btn-secondary btn-sm" onClick="javascript:history.go(-1);">Previous Page</button>
+        <div>
+                <br>
             <h3 style="">
                 {{ title }}
             </h3>
@@ -41,7 +45,7 @@
                             </td>
                             <td>
                                 {% for genre in book.genre %}
-                                    <a href="/{{ genre }}">{{ genre }}</a>
+                                    <a href="/categories/{{ genre }}">{{ genre }}</a>
                                     {% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
@@ -59,7 +63,7 @@
                 </tbody>
             </table>
         </div>
-
+</div>
         {% block scripts %}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="/static/js/fancyTable.js"></script>
