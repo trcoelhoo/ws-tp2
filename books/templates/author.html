@@ -43,7 +43,7 @@
                             <td>
                                 {% for genre in book.genre %}
                                     {% if forloop.counter > 1 %}, {% endif %}
-                                    <a href="/books/genres/{{ genre }}">{{ genre }}</a>
+                                    <a href="/categories/{{ genre }}">{{ genre }}</a>
                                 {% endfor %}
                             </td>
                         </tr>
