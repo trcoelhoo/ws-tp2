@@ -8,19 +8,12 @@ MEI Web Semântica Trabalho Prático 1
           /books.csv -> ficheiro original retirado do kaggle (https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks)
           /books.nt -> ficheiro criado pelo script
           /new.nt -> ficheiro atualizado após queries com novas informações para os dados
-```
-
-```
 /Dataset/ -> pasta com o ficheiro original retirado do kaggle 
           /books.csv -> ficheiro original retirado do kaggle (https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks)
-```
 
-```
 /GraphDB/ -> pasta que possui ficheiro python com todas as queries criadas para explorar, visualizar e perceber os dados
           /queries.py -> ficheiro Python com todas as queries criadas ao longo do projeto (algumas usadas na aplicação)
-```
 
-```
 /books/ -> projeto Django da aplicação desenvolvida
 ```
 
