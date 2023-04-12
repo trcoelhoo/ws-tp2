@@ -138,7 +138,6 @@ WHERE {
     FILTER (?publication_date > "2017-01-01"^^xsd:date && ?publication_date < "2020-01-01"^^xsd:date)
 }
 
-
 """
 
 # Query 9 - show all the books that was more than 3000 pages 
@@ -152,8 +151,6 @@ WHERE {
     FILTER (xsd:integer(?pages) > 3000)
 }
 
-
-
 """
 
 # Query 10 - show all the books that as rating more than 3.5 and less than 4.5
@@ -166,7 +163,6 @@ WHERE {
     ?book pred:has_rating ?rating .
     FILTER (xsd:decimal(?rating) > 3.5 && xsd:decimal(?rating) < 4.5)
 }
-
 
 """
 
@@ -185,7 +181,7 @@ WHERE {
 
 """
 
-# Query 12 - remove has_seen property from all books and add has_seen_by property to all books
+# Query 12 - remove has_seen property from all books and add has_seen property with booleans to all books
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -198,7 +194,7 @@ INSERT {
     ?book pred:has_seen "false"^^xsd:boolean .
 }
 WHERE {
-    ?book pred:has_seen_by ?seen .
+    ?book pred:has_seen ?seen .
 }
 """
 
@@ -259,8 +255,8 @@ WHERE {
     books:1 pred:has_seen "true"^^xsd:boolean .
 }
 """
-# Query 17 - Search for a book by its title or isbn or author name or publisher name (case insensitive) and show the results without duplicates
 
+# Query 17 - Search for a book by its title or isbn or author name or publisher name (case insensitive) and show the results without duplicates
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -345,13 +341,9 @@ WHERE {
 # Query 18 - add genres to the books based on the following rules:
 # 1. If the book has more than 1000 pages, add "long" genre
 # 2. If the book has more than 4.5 rating, add "good" genre
-# 3. If the book has more than 1000 pages and more than 4.5 rating, add "long_good" genre
-# 5. If the book has more than 1000 pages and less than 3.5 rating, add "long_bad" genre
-# 6. If the book has less than 1000 pages and more than 4.5 rating, add "short_good" genre
-# 7. If the book has less than 1000 pages and less than 3.5 rating, add "short_bad" genre
-# 8. If the book has less than 1000 pages, add "short" genre
-# 9. If the book has less than 3.5 rating, add "bad" genre
-# 10. If the book has more than 500 reviews, add "popular" genre
+# 3. If the book has less than 1000 pages, add "short" genre
+# 4. If the book has less than 3.5 rating, add "bad" genre
+# 5. If the book has more than 10000 reviews, add "popular" genre
 
 query = """
 PREFIX books: <http://books.com/books/>
@@ -382,74 +374,6 @@ INSERT {
 WHERE {
     ?book pred:has_rating ?rating .
     FILTER (xsd:decimal(?rating) > 4.5)
-}
-"""
-
-query = """
-PREFIX books: <http://books.com/books/>
-PREFIX pred: <http://books.com/preds/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-DELETE {
-    ?book pred:has_genre ?genre .
-}
-INSERT {
-    ?book pred:has_genre "long_good" .
-}
-WHERE {
-    ?book pred:has_pages ?pages .
-    ?book pred:has_rating ?rating .
-    FILTER (xsd:integer(?pages) > 1000 && xsd:decimal(?rating) > 4.5)
-}
-"""
-
-query = """
-PREFIX books: <http://books.com/books/>
-PREFIX pred: <http://books.com/preds/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-DELETE {
-    ?book pred:has_genre ?genre .
-}
-INSERT {
-    ?book pred:has_genre "long_bad" .
-}
-WHERE {
-    ?book pred:has_pages ?pages .
-    ?book pred:has_rating ?rating .
-    FILTER (xsd:integer(?pages) > 1000 && xsd:decimal(?rating) < 3.5)
-}
-"""
-
-query = """
-PREFIX books: <http://books.com/books/>
-PREFIX pred: <http://books.com/preds/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-DELETE {
-    ?book pred:has_genre ?genre .
-}
-INSERT {
-    ?book pred:has_genre "short_good" .
-}
-WHERE {
-    ?book pred:has_pages ?pages .
-    ?book pred:has_rating ?rating .
-    FILTER (xsd:integer(?pages) < 1000 && xsd:decimal(?rating) > 4.5)
-}
-"""
-
-query = """
-PREFIX books: <http://books.com/books/>
-PREFIX pred: <http://books.com/preds/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-DELETE {
-    ?book pred:has_genre ?genre .
-}
-INSERT {
-    ?book pred:has_genre "short_bad" .
-}
-WHERE {
-    ?book pred:has_pages ?pages .
-    ?book pred:has_rating ?rating .
-    FILTER (xsd:integer(?pages) < 1000 && xsd:decimal(?rating) < 3.5)
 }
 """
 
@@ -531,16 +455,6 @@ PREFIX pred: <http://books.com/preds/>
 SELECT (COUNT(?book) AS ?count)
 WHERE {
     ?book pred:has_genre "short" .
-}
-"""
-
-# Query 22 - get number of books that have "short" genre and "good" genre
-query = """
-PREFIX books: <http://books.com/books/>
-PREFIX pred: <http://books.com/preds/>
-SELECT (COUNT(?book) AS ?count)
-WHERE {
-    ?book pred:has_genre "short_good" .
 }
 """
 
