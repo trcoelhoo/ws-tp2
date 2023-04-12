@@ -11,6 +11,9 @@
 
     <body>
 
+        <div class="back_button">
+            <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        </div>
     <div class="container">
         <h3 style="">
             {{ title }}
@@ -23,48 +26,45 @@
             </div>
         </form>
         <table id="mytableID" style="width:100%"
-               class="table table-striped sampleTable">
-            <thead>
-            <tr>
-                <th>Book Title</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Rating</th>
-                <th>ISBN</th>
-                <th>Readed</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for book in books %}
-                <!-- if clicked on the book title, go to the book page -->
-                <tr>
-                    <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
-                    <!-- put all the authors from the list in a string -->
-                    <td>
-                        {% for author in book.author_name %}
-                            <a href="/books/authors/{{ author }}">{{ author }}</a>
-                            {% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for genre in book.genre %}
-                            <a href="/{{ genre }}">{{ genre }}</a>
-                            {% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{{ book.rating }}</td>
-                    <td>{{ book.isbn }}</td>
+                   class="table table-striped sampleTable">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Rating</th>
+                        <th>ISBN</th>
+                        <th>Read</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <!-- if clicked on the book title, go to the book page -->
+                        <tr>
+                            <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
+                            <!-- put all the authors from the list in a string -->
+                            <td>
+                                {% for author in book.author_name %}
+                                    <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for genre in book.genre %}
+                                    <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ book.rating }}</td>
+                            <td>{{ book.isbn }}</td>
 
-                    <!-- show if it has been read (book.has_seen=="true" with a checkbox, if the user clicks on it, it will be updated in the database (function in the views.py) -->
-                    <td>
-                        <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
-                                ">Mark as read</input>
-                    </td>
+                            <!-- show if it has been read (book.has_seen=="true" with a checkbox, if the user clicks on it, it will be updated in the database (function in the views.py) -->
+                            <td>
+                                <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'"></input>
+                            </td>
 
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
     </div>
 
     {% block scripts %}
