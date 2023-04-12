@@ -22,82 +22,41 @@
         </div>
         <div class="book info">
             <!-- all authors with link to their page -->
-            <p>Author: {% for author in book.author_name %}
-                <!-- put "," between authors -->
-                {% if forloop.counter > 1 %}, {% endif %}
-                <a href="/books/authors/{{ author }}">{{ author}}</a>
+            <p><b>Written by:</b>
+                {% for author in book.author_name %}
+                     <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </p>
-            <p>ISBN: {{ book.isbn }}</p>
-            <p>Published by: {{ book.publisher_name }}</p>
-            <p>Published on: {{ book.publication_date }}</p>
             <!-- all genres with link to their page -->
-            <p>Category: {% for genre in book.genre %}
-                <!-- put "," between genres -->
-                {% if forloop.counter > 1 %}, {% endif %}
-                <a href="/{{ genre }}">{{ genre}}</a>
-                {% endfor %}
-            </p>
-            <p>Pages: {{ book.pages }}</p>
-            <p>Language: {{ book.language }}</p>
-            <div class="book rating">
-                <p>Rating: {{ book.rating }}</p>
-                <img src="/static/images/star.webp" alt="rating" >
-                <p> ({{ book.reviews }} reviews)</p>
-            </div>
-
-        <div class="container">
-            <br>
-            <button type="button" class="btn btn-secondary btn-sm" onClick="javascript:history.go(-1);">Previous Page</button>
-            <div>
-                <br>
-                <h3 style="">
-                    {{ book.title }}
-                </h3>
-                <div>
-                    <b>Written by:</b>
-                    {% for author in book.author_name %}
-                         <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </div>
-                <div>
-                    <b>Rating:</b> {{ book.rating }} stars ({{ book.reviews }} reviews)
-                </div>
-                <br>
-                <div>
-                    <b>Genres:</b>
+            <p><b>Genres:</b>
                      {% for genre in book.genre %}
                         <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-                </div>
-                <div>
-                    <b>Pages:</b> {{ book.pages }}
-                </div>
-                 <div>
-                    <b>Language:</b> {{ book.language }}
-                </div>
-                <br>
-                <div>
-                    ISBN: {{ book.isbn }}
-                </div>
-                <div>
-                    Published by {{ book.publisher_name }} on {{ book.publication_date }}
-                </div>
+            </p>
+            <p><b>Pages:</b> {{ book.pages }}</p>
+            <p><b>Language:</b> {{ book.language }}</p>
+            <div class="book rating">
+                <p><b>Rating:</b> {{ book.rating }}</p>
+                <img src="/static/images/star.webp" alt="rating" >
+                <p><small>({{ book.reviews }} reviews)</small></p>
+            </div>
 
             <div class="book has_seen">
                 <p>Have you read this book?</p>
-                <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
-                                            ">Mark as read</input>
-            </div>
-        </div>
-    </div>
-    </body>
-
                 {% if book.has_seen == "true" %}
                     <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
                 {% else %}
                     <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
                 {% endif %}
+            </div>
+            <p><small>ISBN: {{ book.isbn }}</small></p>
+            <p><small>Published by {{ book.publisher_name }} on {{ book.publication_date }}</small></p>
+
+        </div>
+    </div>
+    </body>
+
+
             </div>
         </div>
 
