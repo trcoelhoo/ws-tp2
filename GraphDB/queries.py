@@ -1,6 +1,7 @@
 import json
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
+
 endpoint = "http://localhost:7200"
 repo_name = "books"
 client = ApiClient(endpoint=endpoint)
@@ -12,7 +13,6 @@ PREFIX books: <http://books.com/books/>
 PREFIX pred: <http://books.com/preds/>
 SELECT
     ?book
-
 WHERE {
     books:1 pred:has_title ?title .
     ?book pred:has_title ?title .

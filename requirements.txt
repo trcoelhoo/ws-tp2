@@ -1,0 +1,5 @@
+numpy
+django
+s4api
+rdflib
+python-dotenv

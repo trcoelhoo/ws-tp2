@@ -1,12 +1,23 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <head>
     {%  extends "base.html" %}
     <title>{{ book.title }}</title>
+=======
+<head>
+    {% extends "base.html" %}
+    <!-- set the title -->
+    {% block title %}All Books{% endblock %}
+
+</head>
+<!-- go back button -->
+>>>>>>> create-docker-compose
 
 
 </head>
 <!-- show book info -->
 {% block content %}
+<<<<<<< HEAD
     <body>
     <!-- go back button -->
     <div class="row">
@@ -45,8 +56,51 @@
                 <img src="/static/images/star.webp" alt="rating" >
                 <p> ({{ book.reviews }} reviews)</p>
             </div>
+=======
 
 
+    <body>
+>>>>>>> create-docker-compose
+
+        <div class="container">
+            <br>
+            <button type="button" class="btn btn-secondary btn-sm" onClick="javascript:history.go(-1);">Previous Page</button>
+            <div>
+                <br>
+                <h3 style="">
+                    {{ book.title }}
+                </h3>
+                <div>
+                    <b>Written by:</b>
+                    {% for author in book.author_name %}
+                         <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    <b>Rating:</b> {{ book.rating }} stars ({{ book.reviews }} reviews)
+                </div>
+                <br>
+                <div>
+                    <b>Genres:</b>
+                     {% for genre in book.genre %}
+                        <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    <b>Pages:</b> {{ book.pages }}
+                </div>
+                 <div>
+                    <b>Language:</b> {{ book.language }}
+                </div>
+                <br>
+                <div>
+                    ISBN: {{ book.isbn }}
+                </div>
+                <div>
+                    Published by {{ book.publisher_name }} on {{ book.publication_date }}
+                </div>
+
+<<<<<<< HEAD
             <div class="book has_seen">
                 <p>Have you read this book?</p>
                 <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
@@ -55,6 +109,18 @@
         </div>
     </div>
     </body>
+=======
+                <br>
+>>>>>>> create-docker-compose
 
+                {% if book.has_seen == "true" %}
+                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
+                {% endif %}
+            </div>
+        </div>
+
+    </body>
 
 {% endblock %}
