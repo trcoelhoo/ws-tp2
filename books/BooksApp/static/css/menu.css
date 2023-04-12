@@ -57,6 +57,7 @@
     letter-spacing: 1px;
     align-content: center;
     justify-content: center;
+    color: black;
 }
 
 .menu .hexagonArea .hexagon:hover{
