@@ -1,5 +1,6 @@
 import csv
 from datetime import date
+from sys import argv
 
 from rdflib import Graph, Literal, Namespace, RDF, URIRef
 from rdflib.namespace import FOAF, XSD
@@ -35,10 +36,11 @@ seen= predicate.has_seen    # for website users
 
 
 
+# Get name file from command line
+file = argv[1]
 
 
-
-with open('books.csv','r') as input:
+with open(file,'r') as input:
     with open('books.nt','w') as output:
         reader = csv.DictReader(input)
         for row in reader:
@@ -91,6 +93,7 @@ with open('books.csv','r') as input:
 
             book_id += 1
 
+print("Done, check books.nt file")
 
 
 
