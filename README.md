@@ -32,8 +32,9 @@ Import > Upload RDF files
 Open /Converter/new.nt
 Import
 ```
-Executar projeto Django
+Executar projeto Django dentro de um ambiente virtual
 ```bash
+pip install -r requirements.txt
 python3 books/manage.py runserver
 ```
 Executar conversor
