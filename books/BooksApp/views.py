@@ -62,6 +62,16 @@ def search_books(request):
     return render(request, 'search.html', {'title': title, "books": books})
 
 
+def search_books_by_years(request):
+    q = Queries(endpoint, repo_name)
+    year1 = request.GET.get('year1')
+    year2 = request.GET.get('year2')
+    print(f"key: {year1} {year2}")
+    title = f"Results for years: {year1} to {year2}"
+    books = q.search_year(year1, year2)
+    return render(request, 'search.html', {'title': title, "books": books})
+
+
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()

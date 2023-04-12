@@ -21,6 +21,7 @@
         <h1>Your Library</h1>
 
         <br>
+        <h3>Search by title, author or isbn</h3>
 
         <form action="{% url 'search_books' %}" >
             <div class="input-group mb-3">
@@ -28,6 +29,17 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </div>
         </form>
+
+        <h3>Search in a range of years</h3>
+        <!-- search books between 2 years -->
+        <form action="{% url 'search_books_by_years' %}" >
+            <div class="input-group mb-3">
+                <input type="number" id="year1" class="form-control" placeholder="Year 1" aria-label="Year 1" name="year1">
+                <input type="number" id="year2" class="form-control" placeholder="Year 2" aria-label="Year 2" name="year2">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </div>
+        </form>
+
     <div class="menu">
         <div class = "hexagonArea first">
             <a href="{% url 'books' %}">
