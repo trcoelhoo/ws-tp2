@@ -1,23 +1,12 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <head>
     {%  extends "base.html" %}
     <title>{{ book.title }}</title>
-=======
-<head>
-    {% extends "base.html" %}
-    <!-- set the title -->
-    {% block title %}All Books{% endblock %}
-
-</head>
-<!-- go back button -->
->>>>>>> create-docker-compose
 
 
 </head>
 <!-- show book info -->
 {% block content %}
-<<<<<<< HEAD
     <body>
     <!-- go back button -->
     <div class="row">
@@ -56,11 +45,6 @@
                 <img src="/static/images/star.webp" alt="rating" >
                 <p> ({{ book.reviews }} reviews)</p>
             </div>
-=======
-
-
-    <body>
->>>>>>> create-docker-compose
 
         <div class="container">
             <br>
@@ -100,7 +84,6 @@
                     Published by {{ book.publisher_name }} on {{ book.publication_date }}
                 </div>
 
-<<<<<<< HEAD
             <div class="book has_seen">
                 <p>Have you read this book?</p>
                 <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'
@@ -109,9 +92,6 @@
         </div>
     </div>
     </body>
-=======
-                <br>
->>>>>>> create-docker-compose
 
                 {% if book.has_seen == "true" %}
                     <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
