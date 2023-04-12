@@ -173,7 +173,7 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT (COUNT(?book) AS ?count)
     WHERE {
-        ?book pred:has_genre ?genre .
+        ?book pred:has_isbn ?isbn .
     }
     """
 
@@ -415,6 +415,7 @@ class Queries:
     }
     
     """
+
 
     def __init__(self, endpoint, repo_name):
         self.endpoint = endpoint
