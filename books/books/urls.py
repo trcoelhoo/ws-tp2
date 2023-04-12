@@ -34,6 +34,6 @@ urlpatterns = [
     path('categories/popular/', views.popular_books, name="popular_books"),
     path('categories/long/', views.long_books, name="long_books"),
     path('categories/short/', views.long_books, name="short_books"),
-    path('categories/seen/', views.seen_books, name="seen_books"),
+    path('categories/read/', views.seen_books, name="read_books"),
     path('search/', views.search_books, name="search_books"),
 ]

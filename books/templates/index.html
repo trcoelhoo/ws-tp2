@@ -16,70 +16,67 @@
     <body>
     <br/><br/>
     <div class="container">
-        <form method="GET" target="{% url 'search_books' %}">
+
+        <h1>Your Library</h1>
+
+        <br>
+
+        <form action="{% url 'search_books' %}" >
             <div class="input-group mb-3">
-            <input type="text" id="keyword_bar" class="form-control" placeholder="Keyword" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button
-                        class="btn btn-outline-secondary" type="submit"
-                >
-                    Search
-                </button>
+                <input type="search" id="keyword" class="form-control" placeholder="Search..." aria-label="Search" name="searchForm">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </div>
-        </div>
         </form>
-    </div>
     <div class="menu">
-
         <div class = "hexagonArea first">
-                <a href="{% url 'good_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/good.webp" alt="good books" width="100" height="100">
-                <h3>Good Books: {{ nGood }}</h3>
-            </div>
-                </a>
-                <a href="{% url 'bad_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/bad.webp" alt="bad books" width="100" height="100">
-                <h3>Bad Books: {{ nBad }}</h3>
-            </div>
-                </a>
-                <a href="{% url 'popular_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/popular.webp" alt="popular books" width="100" height="100">
-                <h3>Popular: {{ nPopular }}</h3>
-            </div>
-                </a>
-                <a href="{% url 'read_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/seen.webp" alt="all books" width="100" height="100">
-                <h3>Read Books: {{ nSeen }}</h3>
-            </div>
-                </a>
-
+            <a href="{% url 'books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/all.webp" alt="all books" width="100" height="100">
+                    <h3>All Books: {{ nBooks }}</h3>
+                </div>
+            </a>
+            <a href="{% url 'good_books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/good.webp" alt="good books" width="100" height="100">
+                    <h3>Good Books: {{ nGood }}</h3>
+                </div>
+            </a>
+            <a href="{% url 'bad_books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/bad.webp" alt="bad books" width="100" height="100">
+                    <h3>Bad Books: {{ nBad }}</h3>
+                </div>
+            </a>
+            <a href="{% url 'popular_books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/popular.webp" alt="popular books" width="100" height="100">
+                    <h3>Popular: {{ nPopular }}</h3>
+                </div>
+            </a>
 
         </div>
+
         <div class="hexagonArea last">
-                <a href="{% url 'long_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/long.png" alt="long books" width="100" height="100">
-                <h3>Long Books: {{ nLong }}</h3>
-            </div>
-                </a>
-                <a href="{% url 'short_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/short.png" alt="short books" width="100" height="100">
-                <h3>Short Books: {{ nShort }}</h3>
-            </div>
-                </a>
-                <a href="{% url 'short_books' %}">
-            <div class="hexagon">
-                    <img src="/static/images/all.webp" alt="all books" width="100" height="100">
-                <h3>All Books: {{ nBooks }}</h3>
-            </div>
-                </a>
-
+            <a href="{% url 'long_books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/long.png" alt="long books" width="100" height="100">
+                    <h3>Long Books: {{ nLong }}</h3>
+                </div>
+            </a>
+            <a href="{% url 'short_books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/short.png" alt="short books" width="100" height="100">
+                    <h3>Short Books: {{ nShort }}</h3>
+                </div>
+            </a>
+            <a href="{% url 'read_books' %}">
+                <div class="hexagon">
+                        <img src="/static/images/seen.webp" alt="all books" width="100" height="100">
+                    <h3>Read Books: {{ nSeen }}</h3>
+                </div>
+            </a>
         </div>
+    </div>
     </div>
     </body>
 
