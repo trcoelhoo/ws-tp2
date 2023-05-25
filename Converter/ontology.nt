@@ -1,0 +1,34 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix dc:   <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+@prefix books: <http://books.com/> .
+@prefix bookp: <http://books.com/preds/> .
+
+books:books rdf:type owl:Class ;
+            rdfs:subClassOf foaf:Document .
+
+books:publishers rdf:type owl:Class ;
+                 rdfs:subClassOf foaf:Organization .
+
+books:authors rdf:type owl:Class ;
+              rdfs:subClassOf foaf:Person .
+
+bookp:has_title rdf:type rdfs:Property ;
+                rdfs:subPropertyOf foaf:name ;
+                rdfs:domain books:books ;
+                rdfs:range rdfs:Literal .
+
+bookp:has_isbn  rdf:type rdfs:Property ;
+                rdfs:subPropertyOf foaf:name ;
+                rdfs:domain books:books ;
+                rdfs:range rdfs:Literal .
+
+
+
+
+
+
