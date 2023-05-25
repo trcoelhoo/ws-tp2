@@ -23,12 +23,35 @@ bookp:has_title rdf:type rdfs:Property ;
                 rdfs:range rdfs:Literal .
 
 bookp:has_isbn  rdf:type rdfs:Property ;
-                rdfs:subPropertyOf foaf:name ;
                 rdfs:domain books:books ;
                 rdfs:range rdfs:Literal .
 
+bookp:has_pages  rdf:type rdfs:Property ;
+                 rdfs:domain books:books ;
+                 rdfs:range rdfs:Literal .
 
+bookp:has_language  rdf:type rdfs:Property ;
+                 rdfs:domain books:books ;
+                 rdfs:range rdfs:Literal .
 
+bookp:has_rating  rdf:type rdfs:Property ;
+                 rdfs:domain books:books ;
+                 rdfs:range rdfs:Literal .
 
+bookp:published_on  rdf:type rdfs:Property ;
+                 rdfs:domain books:books ;
+                 rdfs:range rdfs:Literal .
 
+bookp:has_name  rdf:type rdfs:Property ;
+                rdfs:subPropertyOf foaf:name ;
+                 rdfs:domain books:authors ;
+                 rdfs:range rdfs:Literal .
+
+bookp:written_by  rdf:type rdfs:Property ;
+                 rdfs:domain books:books ;
+                 rdfs:range books:authors .
+
+bookp:published_by  rdf:type rdfs:Property ;
+                 rdfs:domain books:books ;
+                 rdfs:range books:publishers .
 
