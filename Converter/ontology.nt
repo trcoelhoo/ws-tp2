@@ -7,6 +7,11 @@
 
 @prefix books: <http://books.com/> .
 @prefix bookp: <http://books.com/preds/> .
+@prefix userc: <http://mydata.com/userc/> .
+@prefix userp: <http://mydata.com/userp/> .
+
+userc:user rdf:type owl:Class ;
+           rdfs:subClassOf foaf:Person .
 
 books:books rdf:type owl:Class ;
             rdfs:subClassOf foaf:Document .
@@ -25,6 +30,18 @@ bookp:has_title rdf:type rdfs:Property ;
 bookp:has_isbn  rdf:type rdfs:Property ;
                 rdfs:domain books:books ;
                 rdfs:range rdfs:Literal .
+
+bookp:rated_by  rdf:type rdfs:Property ;
+                rdfs:domain books:books ;
+                rdfs:range rdfs:Literal .
+
+bookp:has_seen  rdf:type rdfs:Property ;
+                rdfs:domain books:books ;
+                rdfs:range rdfs:Literal .
+
+userp:has_seen  rdf:type rdfs:Property ;
+                rdfs:domain userc:user ;
+                rdfs:range books:books .
 
 bookp:has_pages  rdf:type rdfs:Property ;
                  rdfs:domain books:books ;
