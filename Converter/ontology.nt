@@ -22,56 +22,56 @@ book:Book rdf:type owl:Class ;
 publisher:Publisher rdf:type owl:Class ;
                  rdfs:subClassOf foaf:Organization .
 
-books:authors rdf:type owl:Class ;
+author:Author rdf:type owl:Class ;
               rdfs:subClassOf foaf:Person .
 
-bookp:has_title rdf:type owl:Da ;
+bookp:has_title rdf:type owl:DatatypeProperty  ;
                 rdfs:subPropertyOf foaf:name ;
-                rdfs:domain books:books ;
+                rdfs:domain book:Book ;
                 rdfs:range rdfs:Literal .
 
-bookp:has_isbn  rdf:type rdfs:Property ;
-                rdfs:domain books:books ;
+bookp:has_isbn  rdf:type owl:DatatypeProperty ;
+                rdfs:domain book:Book ;
                 rdfs:range rdfs:Literal .
 
-bookp:rated_by  rdf:type rdfs:Property ;
-                rdfs:domain books:books ;
+bookp:rated_by  rdf:type owl:DatatypeProperty ;
+                rdfs:domain book:Book ;
                 rdfs:range rdfs:Literal .
 
-bookp:has_seen  rdf:type rdfs:Property ;
-                rdfs:domain books:books ;
+bookp:has_seen  rdf:type owl:DatatypeProperty ;
+                rdfs:domain book:Book ;
                 rdfs:range rdfs:Literal .
 
-userp:has_seen  rdf:type rdfs:Property ;
-                rdfs:domain userc:user ;
-                rdfs:range books:books .
+userp:has_read  rdf:type owl:ObjectProperty ;
+                rdfs:domain user:User ;
+                rdfs:range book:Book .
 
-bookp:has_pages  rdf:type rdfs:Property ;
-                 rdfs:domain books:books ;
+bookp:has_pages  rdf:type owl:DatatypeProperty ;
+                 rdfs:domain book:Book ;
                  rdfs:range rdfs:Literal .
 
-bookp:has_language  rdf:type rdfs:Property ;
-                 rdfs:domain books:books ;
+bookp:has_language  rdf:type owl:DatatypeProperty ;
+                 rdfs:domain book:Book ;
                  rdfs:range rdfs:Literal .
 
-bookp:has_rating  rdf:type rdfs:Property ;
-                 rdfs:domain books:books ;
+bookp:has_rating  rdf:type owl:DatatypeProperty ;
+                 rdfs:domain book:Book ;
                  rdfs:range rdfs:Literal .
 
-bookp:published_on  rdf:type rdfs:Property ;
-                 rdfs:domain books:books ;
+bookp:published_on  rdf:type owl:DatatypeProperty ;
+                 rdfs:domain book:Book ;
                  rdfs:range rdfs:Literal .
 
-bookp:has_name  rdf:type rdfs:Property ;
+bookp:has_name  rdf:type owl:DatatypeProperty ;
                 rdfs:subPropertyOf foaf:name ;
-                 rdfs:domain books:authors ;
+                 rdfs:domain author:Author ;
                  rdfs:range rdfs:Literal .
 
-bookp:written_by  rdf:type rdfs:Property ;
-                 rdfs:domain books:books ;
-                 rdfs:range books:authors .
+bookp:written_by  rdf:type owl:ObjectProperty ;
+                 rdfs:domain book:Book ;
+                 rdfs:range author:Author .
 
-bookp:published_by  rdf:type rdfs:Property ;
-                 rdfs:domain books:books ;
-                 rdfs:range books:publishers .
+bookp:published_by  rdf:type owl:ObjectProperty ;
+                 rdfs:domain book:Book ;
+                 rdfs:range publisher:Publisher .
 
