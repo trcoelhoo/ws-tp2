@@ -5,24 +5,27 @@
 @prefix dc:   <http://purl.org/dc/elements/1.1/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-@prefix books: <http://books.com/> .
+@prefix book: <http://books.com/books/> .
+@prefix author: <http://books.com/authors/> .
+@prefix publisher: <http://books.com/publishers/>.
 @prefix bookp: <http://books.com/preds/> .
-@prefix userc: <http://mydata.com/userc/> .
+
+@prefix user: <http://mydata.com/user/> .
 @prefix userp: <http://mydata.com/userp/> .
 
-userc:user rdf:type owl:Class ;
-           rdfs:subClassOf foaf:Person .
+user:User rdf:type owl:Class ;
+          rdfs:subClassOf foaf:Person .
 
-books:books rdf:type owl:Class ;
+book:Book rdf:type owl:Class ;
             rdfs:subClassOf foaf:Document .
 
-books:publishers rdf:type owl:Class ;
+publisher:Publisher rdf:type owl:Class ;
                  rdfs:subClassOf foaf:Organization .
 
 books:authors rdf:type owl:Class ;
               rdfs:subClassOf foaf:Person .
 
-bookp:has_title rdf:type rdfs:Property ;
+bookp:has_title rdf:type owl:Da ;
                 rdfs:subPropertyOf foaf:name ;
                 rdfs:domain books:books ;
                 rdfs:range rdfs:Literal .
