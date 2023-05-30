@@ -1,0 +1,71 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX book: <http://books.com/books/>
+        PREFIX bookp: <http://books.com/preds/>
+
+        INSERT {
+            ?X rdf:type book:Long .
+        }
+        WHERE {
+            ?X rdf:type book:Book .
+            ?X bookp:has_pages ?N .
+            FILTER (?N >= 1000)
+        }
+
+///////////////////////////////////////////////
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX book: <http://books.com/books/>
+            PREFIX bookp: <http://books.com/preds/>
+
+            INSERT {
+                ?X rdf:type book:Short .
+            }
+            WHERE {
+                ?X rdf:type book:Book .
+                ?X bookp:has_pages ?N .
+                FILTER (?N < 1000)
+            }
+
+////////////////////////////////
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX book: <http://books.com/books/>
+                PREFIX bookp: <http://books.com/preds/>
+
+                INSERT {
+                    ?X rdf:type book:Short .
+                }
+                WHERE {
+                    ?X rdf:type book:Book .
+	?X bookp:has_rating ?N .
+	FILTER (?N >= 4.5)
+                }
+
+////////////////////////////////////////
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX book: <http://books.com/books/>
+                PREFIX bookp: <http://books.com/preds/>
+
+                INSERT {
+                    ?X rdf:type book:Short .
+                }
+                WHERE {
+                    ?X rdf:type book:Book .
+	?X bookp:has_rating ?N .
+	FILTER (?N < 3.5)
+                }
+////////////////////////////////////////////
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX book: <http://books.com/books/>
+                PREFIX bookp: <http://books.com/preds/>
+
+                INSERT {
+                    ?X rdf:type book:Short .
+                }
+                WHERE {
+                    ?X rdf:type book:Book .
+	?X bookp:rated_by ?N .
+	FILTER (?N >= 1000)
+                }

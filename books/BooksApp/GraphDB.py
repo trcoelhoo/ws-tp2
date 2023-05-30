@@ -23,6 +23,9 @@ class GraphDB:
         response = json.loads(response)
         return response['results']['bindings']
 
+    def get_sparql(self):
+        return SPARQLWrapper(self.sparql_endpoint)
+
     def create(self, cmd):
         sparql = SPARQLWrapper(self.sparql_endpoint)
         sparql.setMethod(POST)

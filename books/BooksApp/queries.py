@@ -1,10 +1,9 @@
 from .GraphDB import GraphDB
-from SPARQLWrapper import SPARQLWrapper, JSON
 import requests
+from SPARQLWrapper import SPARQLWrapper, JSON, POST, GET
 
 
 class Queries:
-
     # Get the number of short books (less than 1000 pages)
     nShortBooks = """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -19,12 +18,12 @@ class Queries:
     # Get short books
     shortBooks = """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX book: <http://books.com/books/>
+    PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
-        ?book rdf:type book:Short .
+        ?book rdf:type books:Short .
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
@@ -48,7 +47,7 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT (COUNT(?book) AS ?count)
     WHERE {
-        ?book pred:has_genre "good" .
+        ?book rdf:type books:Good .
     }
     """
 
@@ -83,7 +82,7 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT (COUNT(?book) AS ?count)
     WHERE {
-        ?book pred:has_genre "bad" .
+        ?book rdf:type books:Bad .
     }
     """
 
@@ -94,12 +93,12 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
-        ?book pred:has_genre "bad" .
+        ?book rdf:type books:Bad .
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -115,7 +114,6 @@ class Queries:
     nLongBooks = """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX books: <http://books.com/books/>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     
     SELECT (COUNT(?book) AS ?count)
     WHERE {
@@ -155,7 +153,7 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT (COUNT(?book) AS ?count)
     WHERE {
-        ?book pred:has_genre "popular" .
+        ?book rdf:type books:Popular .
     }
     """
 
@@ -166,12 +164,12 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
-        ?book pred:has_genre "popular" .
+        ?book rdf:type books:Popular .
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -217,7 +215,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -240,7 +238,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -266,7 +264,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -283,7 +281,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -300,7 +298,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -317,7 +315,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -344,7 +342,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -359,6 +357,7 @@ class Queries:
 
     # Get book by isbn
     getBook = """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
@@ -367,7 +366,7 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
+        ?book rdf:type ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -382,6 +381,7 @@ class Queries:
 
     # Updates the book to the inverse of the current value
     updateBook = """
+    
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     DELETE {
@@ -400,6 +400,7 @@ class Queries:
 
     # Get books from author
     getBooksByAuthor = """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     
@@ -419,7 +420,7 @@ class Queries:
       ?book pred:written_by ?author .
       ?author pred:has_name ?author_name .
       ?book pred:has_pages ?pages .
-      ?book pred:has_genre ?genre .
+      ?book rdf:type ?genre .
       ?book pred:has_rating ?rating .
       ?book pred:rated_by ?reviews .
       ?book pred:has_seen ?has_seen .
@@ -471,71 +472,173 @@ class Queries:
 
         """
 
+    create_good_books = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX book: <http://books.com/books/>
+                PREFIX bookp: <http://books.com/preds/>
+
+                INSERT {
+                    ?X rdf:type book:Good .
+                }
+                WHERE {
+                    ?X rdf:type book:Book .
+	?X bookp:has_rating ?N .
+	FILTER (?N >= 4.5)
+                }
+
+            """
+    create_bad_books = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX book: <http://books.com/books/>
+                PREFIX bookp: <http://books.com/preds/>
+
+                INSERT {
+                    ?X rdf:type book:Bad .
+                }
+                WHERE {
+                    ?X rdf:type book:Book .
+	?X bookp:has_rating ?N .
+	FILTER (?N < 3.5)
+                }
+
+            """
+    create_popular_books = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX book: <http://books.com/books/>
+                PREFIX bookp: <http://books.com/preds/>
+
+                INSERT {
+                    ?X rdf:type book:Popular .
+                }
+                WHERE {
+                    ?X rdf:type book:Book .
+	?X bookp:rated_by ?N .
+	FILTER (?N >= 1000)
+                }
+
+            """
 
     def __init__(self, endpoint, repo_name):
         self.endpoint = endpoint
         self.repo_name = repo_name
         self.db = GraphDB(endpoint, repo_name)
-        self.db.create(self.create_short_books)
-        self.db.create(self.create_long_books)
+
+    def create_all(self):
+        sparql = self.db.get_sparql()
+        sparql.setMethod(POST)
+
+        sparql.setQuery(self.create_short_books)
+        sparql.setReturnFormat(JSON)
+        try:
+            res = sparql.query()
+            print(res.convert())
+        except Exception as e:
+            print(e)
+
+        sparql.setQuery(self.create_long_books)
+        sparql.setReturnFormat(JSON)
+        try:
+            res = sparql.query()
+            print(res.convert())
+        except Exception as e:
+            print(e)
+
+        sparql.setQuery(self.create_good_books)
+        sparql.setReturnFormat(JSON)
+        try:
+            res = sparql.query()
+            print(res.convert())
+        except Exception as e:
+            print(e)
+
+        sparql.setQuery(self.create_bad_books)
+        sparql.setReturnFormat(JSON)
+        try:
+            res = sparql.query()
+            print(res.convert())
+        except Exception as e:
+            print(e)
+
+        sparql.setQuery(self.create_popular_books)
+        sparql.setReturnFormat(JSON)
+        try:
+            res = sparql.query()
+            print(res.convert())
+        except Exception as e:
+            print(e)
+
     def get_number_short_books(self):
+        self.create_all()
         response = self.db.query(self.nShortBooks)
         return response[0]['count']['value']
 
     def get_short_books(self):
+        self.create_all()
         return self.get_books(self.shortBooks)
 
     def get_number_good_books(self):
+        self.create_all()
         response = self.db.query(self.nGoodBooks)
         return response[0]['count']['value']
 
     def get_good_books(self):
+        self.create_all()
         return self.get_books(self.goodBooks)
 
     def get_number_bad_books(self):
+        self.create_all()
         response = self.db.query(self.nBadBooks)
         return response[0]['count']['value']
 
     def get_bad_books(self):
+        self.create_all()
         return self.get_books(self.badBooks)
 
     def get_number_long_books(self):
-
+        self.create_all()
         response = self.db.query(self.nLongBooks)
         return response[0]['count']['value']
 
     def get_long_books(self):
+        self.create_all()
         return self.get_books(self.longBooks)
 
     def get_number_popular_books(self):
+        self.create_all()
         response = self.db.query(self.nPopularBooks)
         return response[0]['count']['value']
 
     def get_popular_books(self):
+        self.create_all()
         return self.get_books(self.popularBooks)
 
     def get_number_books(self):
-        self.db.create(self.create_long_books)
+        self.create_all()
         response = self.db.query(self.nBooks)
         return response[0]['count']['value']
 
     def get_all_books(self):
+        self.create_all()
         return self.get_books(self.allBooks)
 
     def get_number_seen_books(self):
+        self.create_all()
         response = self.db.query(self.nSeenBooks)
         return response[0]['count']['value']
 
     def get_seen_books(self):
+        self.create_all()
         query = self.seenBooks
         return self.get_books(query)
 
     def get_books(self, query):
-        acceptable_genres = ["Long", "Short"]
+        self.create_all()
+        acceptable_genres = ["Long", "Short", "Good", "Bad", "Popular"]
         response = self.db.query(query)
         books = dict()
         for elem in response:
             genre = elem['genre']['value'].split("/")[-1]
+            print(elem['genre']['value'], genre)
             isbn = elem['isbn']['value']
             # check if the book is already in the list and if it is, add the author to the list of
             # authors and the genre to the list of genres if it is not already there
@@ -563,7 +666,6 @@ class Queries:
                 book_info['genre'] = []
                 if genre in acceptable_genres:
                     book_info['genre'].append(genre)
-
 
                 book_info['author_name'] = [elem['author_name']['value']]
                 book_info['language'] = self.__get_language(elem['language']['value'])
@@ -599,16 +701,19 @@ class Queries:
             return language
 
     def search_book(self, keyword):
+        self.create_all()
         if keyword == '':
             return {}
         query = self.searchBook.replace("toSearch", keyword)
         return self.get_books(query)
 
     def search_year(self, year1, year2):
+        self.create_all()
         query = self.searchYear.replace("year1", year1).replace("year2", year2)
         return self.get_books(query)
 
     def get_book_by_isbn(self, isbn):
+        self.create_all()
         string = str(isbn)
         query = self.getBook.replace("replace", string)
         dict = self.get_books(query)
@@ -618,15 +723,16 @@ class Queries:
             return None
 
     def update_seen(self, isbn):
+        self.create_all()
         string = str(isbn)
         query = self.updateBook.replace("replace", string)
         self.db.update(query)
 
     def get_books_by_author(self, author):
+        self.create_all()
         string = str(author)
         query = self.getBooksByAuthor.replace("replace", string)
         return self.get_books(query)
-    
 
     def get_author_image(author_name):
         sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
@@ -655,8 +761,8 @@ class Queries:
         results = sparql.query().convert()
         if len(results["results"]["bindings"]) > 0:
             return results["results"]["bindings"][0]["image"]["value"]
-        
-        url=f"https://www.googleapis.com/books/v1/volumes?q={author_name}&maxResults=1"
+
+        url = f"https://www.googleapis.com/books/v1/volumes?q={author_name}&maxResults=1"
         response = requests.get(url)
         data = response.json()
         if "items" in data and data["items"]:
@@ -664,7 +770,7 @@ class Queries:
             if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
                 return volume_info["imageLinks"]["thumbnail"]
         return None
-    
+
     def get_book_image(book_title):
         url = f"https://www.googleapis.com/books/v1/volumes?q={book_title}&maxResults=1"
         response = requests.get(url)
@@ -674,9 +780,9 @@ class Queries:
             volume_info = data["items"][0]["volumeInfo"]
             if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
                 return volume_info["imageLinks"]["thumbnail"]
-        
+
         return None
-    
+
     def get_book_genre(book_title):
         sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
         sparql.setQuery(f"""
@@ -719,9 +825,5 @@ class Queries:
             volume_info = data["items"][0]["volumeInfo"]
             if "categories" in volume_info and volume_info["categories"]:
                 return volume_info["categories"][0]
-            
+
         return None
-    
-
-
-        
