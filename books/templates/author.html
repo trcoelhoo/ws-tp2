@@ -16,6 +16,9 @@
     <!-- show all the books of the author and their authors, rating, and genre -->
     <div class="author books">
         <div class="author table">
+            <div class="author books">
+                <img src="{{ author.author_image }}" alt="author image">
+            </div>
             <div class="author_name">
                 <h1>{{ author_name }}'s Books</h1>
             </div>
@@ -31,33 +34,30 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                        {% for book in author %}
-                            <tr>
-                                <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
-                                <!-- put all the authors of the book and reference them -->
-                                <td>
-                                    {% for author in book.author_name %}
-                                        {% if forloop.counter > 1 %}, {% endif %}
-                                        <a href="/books/authors/{{ author }}">{{ author}}</a>
-                                    {% endfor %}
-                                </td>
-                                <td>{{ book.rating }}</td>
-                                <td>
-                                    {% for genre in book.genre %}
-                                        {% if forloop.counter > 1 %}, {% endif %}
-                                        <a href="/categories/{{ genre }}">{{ genre }}</a>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-
-
+                    {% for book in author.books %}
+                        <tr>
+                            <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
+                            <!-- put all the authors of the book and reference them -->
+                            <td>
+                                {% for author in book.author_name %}
+                                    {% if forloop.counter > 1 %}, {% endif %}
+                                    <a href="/books/authors/{{ author }}">{{ author}}</a>
+                                {% endfor %}
+                            </td>
+                            <td>{{ book.rating }}</td>
+                            <td>
+                                {% for genre in book.genre %}
+                                    {% if forloop.counter > 1 %}, {% endif %}
+                                    <a href="/categories/{{ genre }}">{{ genre }}</a>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
                     </div>
            <div class="column" style="flex: 20%; text-align: center;">
-                    <img alt={{ author_name }} src={{ author_image }}>
+                    <img alt="{{ author_name }}" src="{{ author.image }}">
               </div>
                 </div>
         </div>

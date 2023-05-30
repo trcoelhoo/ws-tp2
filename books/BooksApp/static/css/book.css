@@ -119,3 +119,18 @@ body {
   margin-bottom: 0.6rem;
 
 }
+
+.semantics-tree {
+    margin-top: 20px;
+}
+
+.semantics-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.semantics-tree li:before {
+    content: "▸";
+    margin-right: 5px;
+}
+

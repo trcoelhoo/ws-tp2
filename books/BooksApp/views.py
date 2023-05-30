@@ -37,12 +37,17 @@ def book(request, book_isbn):
     book = q.get_book_by_isbn(book_isbn)
     book_image = q.get_book_image(book["title"])
 
-    return render(request, 'book.html', {'book': book, 'book_image': book_image})
+    if book['book_image'] is None:
+        book['book_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+
+
+    return render(request, 'book.html', {'book': book})
 
 
 def update(request, book_isbn):
     q = Queries(endpoint, repo_name)
     q.update_seen(book_isbn)
+
     # send back to the book page
     url = '/books/' + str(book_isbn) + '/'
     return HttpResponseRedirect(url)
@@ -51,9 +56,11 @@ def update(request, book_isbn):
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
     author = q.get_author(author_name)
-    print(author)
-    author_image = q.get_book_image(author_name)
-    return render(request, 'author.html', {'author': author, 'author_name': author_name, 'author_image': author_image})
+    image = author['author_image']
+    if image is None:
+        author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+
+    return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
 def search_books(request):

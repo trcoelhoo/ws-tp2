@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <head>
-    {%  extends "base.html" %}
+    {% extends "base.html" %}
     <title>{{ book.title }}</title>
-
-
 </head>
+
 <!-- show book info -->
 {% block content %}
     <body>
-    <!-- go back button -->
-    <div class="row">
-        <div class="back_button">
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        <!-- go back button -->
+        <div class="row">
+            <div class="back_button">
+                <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+            </div>
         </div>
     </div>
 
@@ -31,7 +31,7 @@
                   </p>
 
                 <!-- all genres with link to their page -->
-                <{% comment %}p><b>Genres:</b>
+                {% comment %}<p><b>Genres:</b>
                          {% for genre in book.genre %}
                             <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
@@ -40,7 +40,7 @@
                 <p><b>Language:</b> {{ book.language }}</p>
               </div>
               <div class="column" style="flex: 50%; text-align: center;">
-                    <img alt={{ book.title }} src={{ book_image }}>
+                    <img alt="{{ book.title }}" src="{{ book.book_image }}">
               </div>
             </div>
 
@@ -68,7 +68,5 @@
 
             </div>
         </div>
-
     </body>
-
 {% endblock %}
