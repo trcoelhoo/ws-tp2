@@ -1,0 +1,22 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX book: <http://books.com/books/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX user: <http://mydata.com/user/>
+PREFIX bookp: <http://books.com/preds/>
+PREFIX userp: <http://mydata.com/userp/>
+PREFIX author: <http://books.com/authors/>
+PREFIX publisher: <http://books.com/publishers/>
+
+CONSTRUCT {
+    ?X rdf:type book:Long .
+}
+WHERE {
+	?X rdf:type book:Book .
+	?X bookp:has_pages ?N .
+	FILTER (?N >= 300)
+}
+

@@ -1,6 +1,4 @@
 from .GraphDB import GraphDB
-from SPARQLWrapper import SPARQLWrapper, JSON
-import requests
 
 
 class Queries:
@@ -419,7 +417,6 @@ class Queries:
     """
 
 
-
     def __init__(self, endpoint, repo_name):
         self.endpoint = endpoint
         self.repo_name = repo_name
@@ -634,102 +631,3 @@ class Queries:
         string = str(author)
         query = self.getBooksByAuthor.replace("replace", string)
         return self.get_books(query)
-    
-
-    def get_author_image(author_name):
-        sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
-        sparql.setQuery(f"""
-        SELECT ?image
-        WHERE {{
-            ?author wdt:P31 wd:Q5 .
-            ?author wdt:P18 ?image .
-            ?author rdfs:label "{author_name}"@en .
-        }}
-        """)
-        sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-        if len(results["results"]["bindings"]) > 0:
-            return results["results"]["bindings"][0]["image"]["value"]
-        sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-        sparql.setQuery(f"""
-        SELECT ?image
-        WHERE {{
-            ?author rdf:type dbo:Person .
-            ?author dbo:thumbnail ?image .
-            ?author rdfs:label "{author_name}"@en .
-        }}
-        """)
-        sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-        if len(results["results"]["bindings"]) > 0:
-            return results["results"]["bindings"][0]["image"]["value"]
-        
-        url=f"https://www.googleapis.com/books/v1/volumes?q={author_name}&maxResults=1"
-        response = requests.get(url)
-        data = response.json()
-        if "items" in data and data["items"]:
-            volume_info = data["items"][0]["volumeInfo"]
-            if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
-                return volume_info["imageLinks"]["thumbnail"]
-        return None
-    
-    def get_book_image(book_title):
-        url = f"https://www.googleapis.com/books/v1/volumes?q={book_title}&maxResults=1"
-        response = requests.get(url)
-        data = response.json()
-
-        if "items" in data and data["items"]:
-            volume_info = data["items"][0]["volumeInfo"]
-            if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
-                return volume_info["imageLinks"]["thumbnail"]
-        
-        return None
-    
-    def get_book_genre(book_title):
-        sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
-        sparql.setQuery(f"""
-        SELECT ?genreLabel WHERE {{
-            ?book wdt:P31 wd:Q571 .
-            ?book wdt:P136 ?genre .
-            ?genre rdfs:label ?genreLabel .
-            ?book rdfs:label "{book_title}"@en .
-            FILTER (lang(?genreLabel) = 'en')
-        }}
-        """)
-        sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-
-        if len(results["results"]["bindings"]) > 0:
-            return results["results"]["bindings"][0]["genreLabel"]["value"]
-
-        sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-        sparql.setQuery(f"""
-        PREFIX dct: <http://purl.org/dc/terms/>
-        SELECT ?genreLabel WHERE {{
-            ?book rdf:type dbo:Book .
-            ?book dct:subject ?genre .
-            ?genre rdfs:label ?genreLabel .
-            ?book rdfs:label "{book_title}"@en .
-            FILTER (lang(?genreLabel) = 'en')
-        }}
-        """)
-        sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-
-        if len(results["results"]["bindings"]) > 0:
-            return results["results"]["bindings"][0]["genreLabel"]["value"]
-
-        url = f"https://www.googleapis.com/books/v1/volumes?q={book_title}&maxResults=1"
-        response = requests.get(url)
-        data = response.json()
-
-        if "items" in data and data["items"]:
-            volume_info = data["items"][0]["volumeInfo"]
-            if "categories" in volume_info and volume_info["categories"]:
-                return volume_info["categories"][0]
-            
-        return None
-    
-
-
-        
