@@ -478,7 +478,6 @@ class Queries:
         self.db = GraphDB(endpoint, repo_name)
         self.db.create(self.create_short_books)
         self.db.create(self.create_long_books)
-
     def get_number_short_books(self):
         response = self.db.query(self.nShortBooks)
         return response[0]['count']['value']
