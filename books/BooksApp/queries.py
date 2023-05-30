@@ -468,76 +468,178 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     PREFIX authors: <http://books.com/authors/>
     PREFIX publishers: <http://books.com/publishers/>
+    
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         {
-        ?book pred:has_title ?title .
-        ?book pred:written_by ?author .
-        ?author pred:has_name ?author_name .
-        ?book pred:has_pages ?pages .
-        ?book rdf:type ?genre .
-        ?book pred:has_rating ?rating .
-        ?book pred:rated_by ?reviews .
-        ?book pred:has_seen ?has_seen .
-        ?book pred:has_language ?language .
-        ?book pred:published_by ?publisher .
-        ?publisher pred:has_name ?publisher_name .
-        ?book pred:published_on ?publication_date .
-        ?book pred:has_isbn ?isbn .
-        FILTER regex(?title, "toSearch", "i")
+            ?book pred:has_title ?title .
+            ?book pred:written_by ?author .
+            ?author pred:has_name ?author_name .
+            ?book pred:has_pages ?pages .
+            ?book pred:has_rating ?rating .
+            ?book pred:rated_by ?reviews .
+            ?book pred:has_seen ?has_seen .
+            ?book pred:has_language ?language .
+            ?book pred:published_by ?publisher .
+            ?publisher pred:has_name ?publisher_name .
+            ?book pred:published_on ?publication_date .
+            ?book pred:has_isbn ?isbn .
+            OPTIONAL {
+                {
+                    ?book rdf:type books:Long .
+                    BIND("Long" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Short .
+                    BIND("Short" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Good .
+                    BIND("Good" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Bad .
+                    BIND("Bad" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Popular .
+                    BIND("Popular" AS ?genre)
+                }
+            }
+            FILTER regex(?title, "toSearch", "i")
         }
         UNION
         {
-        ?book pred:has_title ?title .
-        ?book pred:written_by ?author .
-        ?author pred:has_name ?author_name .
-        ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
-        ?book pred:has_rating ?rating .
-        ?book pred:rated_by ?reviews .
-        ?book pred:has_seen ?has_seen .
-        ?book pred:has_language ?language .
-        ?book pred:published_by ?publisher .
-        ?publisher pred:has_name ?publisher_name .
-        ?book pred:published_on ?publication_date .
-        ?book pred:has_isbn ?isbn .
-        FILTER regex(?isbn, "toSearch", "i")
+            ?book pred:has_title ?title .
+            ?book pred:written_by ?author .
+            ?author pred:has_name ?author_name .
+            ?book pred:has_pages ?pages .
+            ?book pred:has_rating ?rating .
+            ?book pred:rated_by ?reviews .
+            ?book pred:has_seen ?has_seen .
+            ?book pred:has_language ?language .
+            ?book pred:published_by ?publisher .
+            ?publisher pred:has_name ?publisher_name .
+            ?book pred:published_on ?publication_date .
+            ?book pred:has_isbn ?isbn .
+            OPTIONAL {
+                {
+                    ?book rdf:type books:Long .
+                    BIND("Long" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Short .
+                    BIND("Short" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Good .
+                    BIND("Good" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Bad .
+                    BIND("Bad" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Popular .
+                    BIND("Popular" AS ?genre)
+                }
+            }
+            FILTER regex(?isbn, "toSearch", "i")
         }
         UNION
         {
-        ?book pred:has_title ?title .
-        ?book pred:written_by ?author .
-        ?author pred:has_name ?author_name .
-        ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
-        ?book pred:has_rating ?rating .
-        ?book pred:rated_by ?reviews .
-        ?book pred:has_seen ?has_seen .
-        ?book pred:has_language ?language .
-        ?book pred:published_by ?publisher .
-        ?publisher pred:has_name ?publisher_name .
-        ?book pred:published_on ?publication_date .
-        ?book pred:has_isbn ?isbn .
-        FILTER regex(?author_name, "toSearch", "i")
+            ?book pred:has_title ?title .
+            ?book pred:written_by ?author .
+            ?author pred:has_name ?author_name .
+            ?book pred:has_pages ?pages .
+            ?book pred:has_rating ?rating .
+            ?book pred:rated_by ?reviews .
+            ?book pred:has_seen ?has_seen .
+            ?book pred:has_language ?language .
+            ?book pred:published_by ?publisher .
+            ?publisher pred:has_name ?publisher_name .
+            ?book pred:published_on ?publication_date .
+            ?book pred:has_isbn ?isbn .
+            OPTIONAL {
+                {
+                    ?book rdf:type books:Long .
+                    BIND("Long" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Short .
+                    BIND("Short" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Good .
+                    BIND("Good" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Bad .
+                    BIND("Bad" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Popular .
+                    BIND("Popular" AS ?genre)
+                }
+            }
+            FILTER regex(?author_name, "toSearch", "i")
         }
         UNION
         {
-        ?book pred:has_title ?title .
-        ?book pred:written_by ?author .
-        ?author pred:has_name ?author_name .
-        ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
-        ?book pred:has_rating ?rating .
-        ?book pred:rated_by ?reviews .
-        ?book pred:has_seen ?has_seen .
-        ?book pred:has_language ?language .
-        ?book pred:published_by ?publisher .
-        ?publisher pred:has_name ?publisher_name .
-        ?book pred:published_on ?publication_date .
-        ?book pred:has_isbn ?isbn .
-        FILTER regex(?publisher_name, "toSearch", "i")
+            ?book pred:has_title ?title .
+            ?book pred:written_by ?author .
+            ?author pred:has_name ?author_name .
+            ?book pred:has_pages ?pages .
+            ?book pred:has_rating ?rating .
+            ?book pred:rated_by ?reviews .
+            ?book pred:has_seen ?has_seen .
+            ?book pred:has_language ?language .
+            ?book pred:published_by ?publisher .
+            ?publisher pred:has_name ?publisher_name .
+            ?book pred:published_on ?publication_date .
+            ?book pred:has_isbn ?isbn .
+            OPTIONAL {
+                {
+                    ?book rdf:type books:Long .
+                    BIND("Long" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Short .
+                    BIND("Short" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Good .
+                    BIND("Good" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Bad .
+                    BIND("Bad" AS ?genre)
+                }
+                UNION
+                {
+                    ?book rdf:type books:Popular .
+                    BIND("Popular" AS ?genre)
+                }
+            }
+            FILTER regex(?publisher_name, "toSearch", "i")
         }
     }
+
     """
 
     # Search by year
@@ -553,7 +655,6 @@ class Queries:
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -562,8 +663,38 @@ class Queries:
         ?publisher pred:has_name ?publisher_name .
         ?book pred:published_on ?publication_date .
         ?book pred:has_isbn ?isbn .
+      
+        # Include inferred genres based on rules
+        OPTIONAL {
+            {
+                ?book rdf:type books:Long .
+                BIND("Long" AS ?genre)
+            }
+            UNION
+            {
+                ?book rdf:type books:Short .
+                BIND("Short" AS ?genre)
+            }
+            UNION
+            {
+                ?book rdf:type books:Good .
+                BIND("Good" AS ?genre)
+            }
+            UNION
+            {
+                ?book rdf:type books:Bad .
+                BIND("Bad" AS ?genre)
+            }
+            UNION
+            {
+                ?book rdf:type books:Popular .
+                BIND("Popular" AS ?genre)
+            }
+        }
+        
         FILTER (?publication_date > "year1-01-01"^^xsd:date && ?publication_date < "year2-01-01"^^xsd:date)
     }
+
     """
 
     # Get book by isbn
