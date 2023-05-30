@@ -64,3 +64,19 @@ WHERE {
 	?X bookp:rated_by ?N .
 	FILTER (?N >= 1000)
 }
+//////////////////////////////////////
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX book: <http://books.com/books/>
+PREFIX bookp: <http://books.com/preds/>
+PREFIX author: <http://books.com/authors/>
+
+CONSTRUCT {
+    ?X rdf:type author:Popular .
+}
+WHERE {
+	?X rdf:type author:Author .
+	?b1  bookp:written_by ?X .
+    ?b2  bookp:written_by ?X .
+	FILTER (?b1 != ?b2)
+} GROUP BY ?X
+//////////////////////////
