@@ -23,20 +23,21 @@ def home(request):
     nGood = q.get_number_good_books()
     nBooks = q.get_number_books()
     nShort = q.get_number_short_books()
-    nLong = q.get_number_long_books()
+    #nLong = q.get_number_long_books()
     nPopular = q.get_number_popular_books()
     nSeen = q.get_number_seen_books()
 
     return render(request, 'index.html',
-                  {'nBad': nBad, 'nGood': nGood, 'nBooks': nBooks, 'nShort': nShort, 'nLong': nLong,
+                  {'nBad': nBad, 'nGood': nGood, 'nBooks': nBooks, 'nShort': nShort, 'nLong': nShort,
                    'nPopular': nPopular, 'nSeen': nSeen})
 
 
 def book(request, book_isbn):
     q = Queries(endpoint, repo_name)
     book = q.get_book_by_isbn(book_isbn)
+    book_image = q.get_book_image(book["title"])
 
-    return render(request, 'book.html', {'book': book})
+    return render(request, 'book.html', {'book': book, 'book_image': book_image})
 
 
 def update(request, book_isbn):
@@ -49,8 +50,10 @@ def update(request, book_isbn):
 
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
-    author = q.get_books_by_author(author_name)
-    return render(request, 'author.html', {'author': author, 'author_name': author_name})
+    author = q.get_author(author_name)
+    print(author)
+    author_image = q.get_book_image(author_name)
+    return render(request, 'author.html', {'author': author, 'author_name': author_name, 'author_image': author_image})
 
 
 def search_books(request):
@@ -75,6 +78,7 @@ def search_books_by_years(request):
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()
+    print(len(good_books))
     return render(request, 'categories.html', {"title": "Good Books", "books": good_books})
 
 

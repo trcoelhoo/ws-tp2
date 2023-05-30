@@ -46,11 +46,11 @@
                                     <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
-                            <td>
+                            {% comment %}<td>
                                 {% for genre in book.genre %}
                                     <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
-                            </td>
+                            </td>{% endcomment %}
                             <td>{{ book.rating }}</td>
                             <td>{{ book.isbn }}</td>
 

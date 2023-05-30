@@ -22,19 +22,28 @@
         </div>
         <div class="book info">
             <!-- all authors with link to their page -->
-            <p><b>Written by:</b>
-                {% for author in book.author_name %}
-                     <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </p>
-            <!-- all genres with link to their page -->
-            <p><b>Genres:</b>
-                     {% for genre in book.genre %}
-                        <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+            <div class="row" style="display: flex">
+              <div class="column" style="flex: 50%; text-align: center;">
+                  <p><b>Written by:</b>
+                    {% for author in book.author_name %}
+                         <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-            </p>
-            <p><b>Pages:</b> {{ book.pages }}</p>
-            <p><b>Language:</b> {{ book.language }}</p>
+                  </p>
+
+                <!-- all genres with link to their page -->
+                <{% comment %}p><b>Genres:</b>
+                         {% for genre in book.genre %}
+                            <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                </p>{% endcomment %}
+                <p><b>Pages:</b> {{ book.pages }}</p>
+                <p><b>Language:</b> {{ book.language }}</p>
+              </div>
+              <div class="column" style="flex: 50%; text-align: center;">
+                    <img alt={{ book.title }} src={{ book_image }}>
+              </div>
+            </div>
+
             <div class="book rating">
                 <p><b>Rating:</b> {{ book.rating }}</p>
                 <img src="/static/images/star.webp" alt="rating" >
