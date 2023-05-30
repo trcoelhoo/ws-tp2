@@ -37,7 +37,7 @@ def book(request, book_isbn):
     book = q.get_book_by_isbn(book_isbn)
 
     if book['book_image'] is None:
-        book['book_image'] = 'https://www.freeiconspng.com/uploads/no-image-icon-4.png'
+        book['book_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
 
 
     return render(request, 'book.html', {'book': book})
@@ -56,7 +56,9 @@ def author(request, author_name):
     q = Queries(endpoint, repo_name)
     author = q.get_author(author_name)
     image = author['author_image']
-    print(image)
+    if image is None:
+        author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
