@@ -682,7 +682,7 @@ var i,
 
 			// Replace a hexadecimal escape sequence with the encoded Unicode code point
 			// Support: IE <=11+
-			// For values outside the Basic Multilingual Plane (BMP), manually construct a
+			// For values outside the Basic Multilingual Plane (BMP), manually create a
 			// surrogate pair
 			high < 0 ?
 				String.fromCharCode( high + 0x10000 ) :
