@@ -16,6 +16,9 @@
     <!-- show all the books of the author and their authors, rating, and genre -->
     <div class="author books">
         <div class="author table">
+            <div class="author books">
+                <img src="{{ author.author_image }}" alt="author image">
+            </div>
             <div class="author_name">
                 <h1>{{ author_name }}'s Books</h1>
             </div>
@@ -29,7 +32,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for book in author %}
+                    {% for book in author.books %}
                         <tr>
                             <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
                             <!-- put all the authors of the book and reference them -->

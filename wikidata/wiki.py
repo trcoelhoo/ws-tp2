@@ -202,7 +202,3 @@ if minimal_age:
     print("Minimal age:", minimal_age)
 else:
     print("No minimal age found for the given book title.")
-
-
-
-

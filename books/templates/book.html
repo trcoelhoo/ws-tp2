@@ -1,65 +1,54 @@
 <!DOCTYPE html>
 <head>
-    {%  extends "base.html" %}
+    {% extends "base.html" %}
     <title>{{ book.title }}</title>
-
-
 </head>
+
 <!-- show book info -->
 {% block content %}
     <body>
-    <!-- go back button -->
-    <div class="row">
-        <div class="back_button">
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        <!-- go back button -->
+        <div class="row">
+            <div class="back_button">
+                <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+            </div>
         </div>
-    </div>
-
-    <!-- show book info -->
-    <div class="book">
-        <div class="book title">
-            <h1>{{ book.title }}</h1>
-        </div>
-        <div class="book info">
-            <!-- all authors with link to their page -->
-            <p><b>Written by:</b>
-                {% for author in book.author_name %}
-                     <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </p>
-            <!-- all genres with link to their page -->
-            <p><b>Genres:</b>
-                     {% for genre in book.genre %}
-                        <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+        <div class="book" typeof="book:Book">
+            <div class="book title">
+                <h1 property="bookp:has_title">{{ book.title }}</h1>
+            </div>
+            <div class="book info">
+                <div class="cover">
+                    <img src="{{ book.book_image }}" alt="Book Cover">
+                </div>
+                <p><b>Written by:</b>
+                    {% for author in book.author_name %}
+                        <a property="bookp:written_by" href="/books/authors/{{ author }}" typeof="author:Author">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-            </p>
-            <p><b>Pages:</b> {{ book.pages }}</p>
-            <p><b>Language:</b> {{ book.language }}</p>
-            <div class="book rating">
-                <p><b>Rating:</b> {{ book.rating }}</p>
-                <img src="/static/images/star.webp" alt="rating" >
-                <p><small>({{ book.reviews }} reviews)</small></p>
-            </div>
-
-            <div class="book has_seen">
-                <p>Have you read this book?</p>
-                {% if book.has_seen == "true" %}
-                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
-                {% else %}
-                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
-                {% endif %}
-            </div>
-            <p><small>ISBN: {{ book.isbn }}</small></p>
-            <p><small>Published by {{ book.publisher_name }} on {{ book.publication_date }}</small></p>
-
-        </div>
-    </div>
-    </body>
-
-
+                </p>
+                <p><b>Genres:</b>
+                    {% for genre in book.genre %}
+                        <a property="bookp:has_genre" href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p property="bookp:has_pages"><b>Pages:</b> {{ book.pages }}</p>
+                <p property="bookp:has_language"><b>Language:</b> {{ book.language }}</p>
+                <div class="book rating">
+                    <p property="bookp:has_rating"><b>Rating:</b> {{ book.rating }}</p>
+                    <img src="/static/images/star.webp" alt="rating">
+                    <p><small>({{ book.reviews }} reviews)</small></p>
+                </div>
+                <div class="book has_seen">
+                    <p>Have you read this book?</p>
+                    {% if book.has_seen == "unseen" %}
+                        <button property="userp:has_read" type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
+                    {% else %}
+                        <button property="userp:has_read" type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
+                    {% endif %}
+                </div>
+                <p><small>ISBN: <span property="bookp:has_isbn">{{ book.isbn }}</span></small></p>
+                <p><small>Published by <span property="bookp:published_by" typeof="publisher:Publisher">{{ book.publisher_name }}</span> on <span property="bookp:published_on">{{ book.publication_date }}</span></small></p>
             </div>
         </div>
-
     </body>
-
 {% endblock %}

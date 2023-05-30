@@ -36,12 +36,17 @@ def book(request, book_isbn):
     q = Queries(endpoint, repo_name)
     book = q.get_book_by_isbn(book_isbn)
 
+    if book['book_image'] is None:
+        book['book_image'] = 'https://www.freeiconspng.com/uploads/no-image-icon-4.png'
+
+
     return render(request, 'book.html', {'book': book})
 
 
 def update(request, book_isbn):
     q = Queries(endpoint, repo_name)
     q.update_seen(book_isbn)
+
     # send back to the book page
     url = '/books/' + str(book_isbn) + '/'
     return HttpResponseRedirect(url)
@@ -49,7 +54,9 @@ def update(request, book_isbn):
 
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
-    author = q.get_books_by_author(author_name)
+    author = q.get_author(author_name)
+    image = author['author_image']
+    print(image)
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
