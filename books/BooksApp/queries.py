@@ -216,13 +216,13 @@ class Queries:
     allBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
+    
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -340,13 +340,13 @@ class Queries:
     getBook = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
+    
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_title ?title .
         ?book pred:written_by ?author .
         ?author pred:has_name ?author_name .
         ?book pred:has_pages ?pages .
-        ?book pred:has_genre ?genre .
         ?book pred:has_rating ?rating .
         ?book pred:rated_by ?reviews .
         ?book pred:has_seen ?has_seen .
@@ -379,17 +379,16 @@ class Queries:
 
     # Get books from author
     getBooksByAuthor = """
-    PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     
-    SELECT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn ?co_author_name
+    SELECT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
-      # Subquery to find all books written by J.K. Rowling
+      # Subquery to find all books written by the author
       {
         SELECT ?book
         WHERE {
           ?book pred:written_by ?author .
-          ?author pred:has_name "replace" .
+          ?author pred:has_name "J.K. Rowling" .
         }
       }
     
@@ -398,7 +397,6 @@ class Queries:
       ?book pred:written_by ?author .
       ?author pred:has_name ?author_name .
       ?book pred:has_pages ?pages .
-      ?book pred:has_genre ?genre .
       ?book pred:has_rating ?rating .
       ?book pred:rated_by ?reviews .
       ?book pred:has_seen ?has_seen .
@@ -408,12 +406,7 @@ class Queries:
       ?book pred:published_on ?publication_date .
       ?book pred:has_isbn ?isbn .
     
-      # Retrieve the names of all co-authors for the book
-      OPTIONAL {
-        ?book pred:written_by ?co_author .
-        ?co_author pred:has_name ?co_author_name .
-        FILTER(?co_author_name != ?author_name)
-      }
+    
     }
     
     """
@@ -552,15 +545,15 @@ class Queries:
             # authors and the genre to the list of genres if it is not already there
             if isbn in books:
                 author = elem['author_name']['value']
-                genre = elem['genre']['value']
+                #genre = elem['genre']['value']
 
                 # check if the author is already in the list of authors
                 if author not in books[isbn]['author_name']:
                     books[isbn]['author_name'].append(author)
 
                 # check if the genre is already in the list of genres
-                if genre not in books[isbn]['genre']:
-                    books[isbn]['genre'].append(genre)
+                #if genre not in books[isbn]['genre']:
+                 #   books[isbn]['genre'].append(genre)
 
             else:
                 book_info = dict()
@@ -572,7 +565,7 @@ class Queries:
                 book_info['has_seen'] = elem['has_seen']['value']
                 book_info['publisher_name'] = elem['publisher_name']['value']
 
-                book_info['genre'] = [elem['genre']['value']]
+                #book_info['genre'] = [elem['genre']['value']]
                 book_info['author_name'] = [elem['author_name']['value']]
                 book_info['language'] = self.__get_language(elem['language']['value'])
                 book_info['publication_date'] = elem['publication_date']['value'].split('T')[0]
@@ -621,22 +614,33 @@ class Queries:
         query = self.getBook.replace("replace", string)
         dict = self.get_books(query)
         if len(dict) > 0:
-            return dict[0]
+            book = dict[0]
+            book['book_image'] = self.get_book_image(book['title'])
+            return book
+
         else:
             return None
+
+
 
     def update_seen(self, isbn):
         string = str(isbn)
         query = self.updateBook.replace("replace", string)
         self.db.update(query)
 
-    def get_books_by_author(self, author):
+    def get_author(self, author):
         string = str(author)
         query = self.getBooksByAuthor.replace("replace", string)
-        return self.get_books(query)
-    
+        author = dict()
+        author['author_name'] = string
+        author['books'] = self.get_books(query)
+        if len(author['books']) > 0:
+            author['author_image'] = self.get_author_image(author['author_name'])
 
-    def get_author_image(author_name):
+        return author
+
+
+    def get_author_image(self, author_name):
         sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
         sparql.setQuery(f"""
         SELECT ?image
@@ -673,7 +677,7 @@ class Queries:
                 return volume_info["imageLinks"]["thumbnail"]
         return None
     
-    def get_book_image(book_title):
+    def get_book_image(self, book_title):
         url = f"https://www.googleapis.com/books/v1/volumes?q={book_title}&maxResults=1"
         response = requests.get(url)
         data = response.json()
@@ -685,7 +689,7 @@ class Queries:
         
         return None
     
-    def get_book_genre(book_title):
+    def get_book_genre(self, book_title):
         sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
         sparql.setQuery(f"""
         SELECT ?genreLabel WHERE {{
@@ -729,7 +733,29 @@ class Queries:
                 return volume_info["categories"][0]
             
         return None
-    
+
+    def get_author_info(self, author_name):
+        sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+        sparql.setQuery(f"""
+        SELECT ?birthDate ?occupationLabel ?genreLabel WHERE {{
+            ?author wdt:P31 wd:Q5 .
+            ?author wdt:P569 ?birthDate .
+            ?author wdt:P106 ?occupation .
+            ?author wdt:P136 ?genre .
+            ?occupation rdfs:label ?occupationLabel .
+            ?genre rdfs:label ?genreLabel .
+            ?author rdfs:label "{author_name}"@en .
+            FILTER (lang(?occupationLabel) = 'en')
+            FILTER (lang(?genreLabel) = 'en')
+        }}
+        """)
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+
+        if len(results["results"]["bindings"]) > 0:
+            return results["results"]["bindings"][0]
+
+        return None
 
 
         
