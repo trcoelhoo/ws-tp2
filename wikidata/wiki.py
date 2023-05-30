@@ -153,7 +153,6 @@ if book_genre:
 else:
     print("No book genre found for the given book title.")
 
-from SPARQLWrapper import SPARQLWrapper, JSON
 
 def get_minimal_age(book_title):
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
