@@ -19,7 +19,7 @@
             </div>
             <div class="book info">
                 <div class="cover">
-                    <img src="{{ book.book_image }}" alt="Book Cover">
+                    <img property="bookp:has_cover" src="{{ book.book_image }}" alt="cover">
                 </div>
                 <p><b>Written by:</b>
                     {% for author in book.author_name %}

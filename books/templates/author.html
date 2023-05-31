@@ -1,64 +1,66 @@
 <!DOCTYPE html>
+
 <head>
     {%  extends "base.html" %}
     <title>{{ author_name }}'s Books</title>
-
 </head>
+
 <!-- show book info -->
 {% block content %}
-    <body>
-    <!-- go back button -->
-    <div class="row">
-        <div class="back_button">
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
-        </div>
+<body>
+<!-- go back button -->
+<div class="row">
+    <div class="back_button">
+        <input type="button" value="Previous Page" onClick="javascript:history.go(-1);">
     </div>
-    <!-- show all the books of the author and their authors, rating, and genre -->
-    <div class="author books">
-        <div class="author table">
-            <div class="author books">
-                <img src="{{ author.author_image }}" alt="author image">
-            </div>
-            <div class="author_name">
-                <h1>{{ author_name }}'s Books</h1>
-            </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Book Title</th>
-                        <th>Author</th>
-                        <th>Rating</th>
-                        <th>Genre</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for book in author.books %}
-                        <tr>
-                            <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
-                            <!-- put all the authors of the book and reference them -->
-                            <td>
-                                {% for author in book.author_name %}
-                                    {% if forloop.counter > 1 %}, {% endif %}
-                                    <a href="/books/authors/{{ author }}">{{ author}}</a>
-                                {% endfor %}
-                            </td>
-                            <td>{{ book.rating }}</td>
-                            <td>
-                                {% for genre in book.genre %}
-                                    {% if forloop.counter > 1 %}, {% endif %}
-                                    <a href="/categories/{{ genre }}">{{ genre }}</a>
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+</div>
+
+<!-- show all the books of the author and their authors, rating, and genre -->
+<div class="author books">
+    <div class="author table">
+        <div class="author books">
+            <img src="{{ author.author_image }}" alt="author image" property="pred:authorImage" />
         </div>
+        <div class="author_name">
+            <h1>{{ author_name }}'s Books</h1>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Rating</th>
+                    <th>Genre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in author.books %}
+                <tr typeof="books:Book">
+                    <td><a href="/books/{{ book.isbn }}" property="pred:title">{{ book.title }}</a></td>
+                    <!-- put all the authors of the book and reference them -->
+                    <td>
+                        {% for author in book.author_name %}
+                        {% if forloop.counter > 1 %}, {% endif %}
+                        <a href="/books/authors/{{ author }}" property="pred:written_by">{{ author }}</a>
+                        {% endfor %}
+                    </td>
+                    <td property="pred:rating">{{ book.rating }}</td>
+                    <td>
+                        {% for genre in book.genre %}
+                        {% if forloop.counter > 1 %}, {% endif %}
+                        <a href="/categories/{{ genre }}" property="pred:has_genre">{{ genre }}</a>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-
-    </body>
+</div>
+</body>
 
 {% endblock %}
+
+
 
 
