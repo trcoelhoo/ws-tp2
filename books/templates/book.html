@@ -25,14 +25,14 @@
               <div class="column" style="flex: 50%; text-align: center;">
                   <p><b>Written by:</b>
                     {% for author in book.author_name %}
-                         <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                         <a property="bookp:written_by" href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                   </p>
 
                 <!-- all genres with link to their page -->
                 <p><b>Genres:</b>
                          {% for genre in book.genre %}
-                            <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                            <a property="bookp:has_genre" href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                 </p>
                 <p><b>Pages:</b> {{ book.pages }}</p>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="book rating">
-                <p><b>Rating:</b> {{ book.rating }}</p>
+                <p property="bookp:has_rating"><b>Rating:</b> {{ book.rating }}</p>
                 <img src="/static/images/star.webp" alt="rating" >
                 <p><small>({{ book.reviews }} reviews)</small></p>
             </div>
@@ -71,8 +71,8 @@
                     <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
                 {% endif %}{% endcomment %}
             </div>
-            <p><small>ISBN: {{ book.isbn }}</small></p>
-            <p><small>Published by {{ book.publisher_name }} on {{ book.publication_date }}</small></p>
+            <p property="bookp:has_isbn"><small>ISBN: {{ book.isbn }}</small></p>
+            <p property="bookp:published_by"><small>Published by {{ book.publisher_name }} on {{ book.publication_date }}</small></p>
 
         </div>
     </div>

@@ -1182,8 +1182,6 @@ class Queries:
 
         return author
 
-
-
     def get_author_image(self, author_name):
         sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
         sparql.setQuery(f"""
@@ -1194,35 +1192,41 @@ class Queries:
             ?author rdfs:label "{author_name}"@en .
         }}
         """)
-        print("hello")
         sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-        if len(results["results"]["bindings"]) > 0:
-            return results["results"]["bindings"][0]["image"]["value"]
-        sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-        sparql.setQuery(f"""
-        SELECT ?image
-        WHERE {{
-            ?author rdf:type dbo:Person .
-            ?author dbo:thumbnail ?image .
-            ?author rdfs:label "{author_name}"@en .
-        }}
-        """)
-        print("hello")
-        sparql.setReturnFormat(JSON)
-        results = sparql.query().convert()
-        if len(results["results"]["bindings"]) > 0:
-            print("hello")
-            return results["results"]["bindings"][0]["image"]["value"]
-        print("hello")
-        url=f"https://www.googleapis.com/books/v1/volumes?q={author_name}&maxResults=1"
-        response = requests.get(url)
-        data = response.json()
-        if "items" in data and data["items"]:
-            volume_info = data["items"][0]["volumeInfo"]
-            if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
-                return volume_info["imageLinks"]["thumbnail"]
-        return None
+        #check if endpoint is up
+        try:
+
+            results = sparql.query().convert()
+                        
+            if len(results["results"]["bindings"]) > 0:
+                return results["results"]["bindings"][0]["image"]["value"]
+        except:
+
+            sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+            sparql.setQuery(f"""
+            SELECT ?image
+            WHERE {{
+                ?author rdf:type dbo:Person .
+                ?author dbo:thumbnail ?image .
+                ?author rdfs:label "{author_name}"@en .
+            }}
+            """)
+            sparql.setReturnFormat(JSON)
+            try:
+                results = sparql.query().convert()
+                if len(results["results"]["bindings"]) > 0:
+                    return results["results"]["bindings"][0]["image"]["value"]
+
+            except:
+
+                url = f"https://www.googleapis.com/books/v1/volumes?q={author_name}&maxResults=1"
+                response = requests.get(url)
+                data = response.json()
+                if "items" in data and data["items"]:
+                    volume_info = data["items"][0]["volumeInfo"]
+                    if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
+                        return volume_info["imageLinks"]["thumbnail"]
+                return None
     
     def get_book_image(self, book_title):
         url = f"https://www.googleapis.com/books/v1/volumes?q={book_title}&maxResults=1"
