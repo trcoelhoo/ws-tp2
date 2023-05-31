@@ -37,8 +37,8 @@
                 </thead>
                 <tbody>
                     {% for book in author.books %}
-                        <tr>
-                            <td><a href="/books/{{ book.isbn }}" property="pred:title">{{ book.title }}</a></td>
+                        <tr property="pred:has_book">
+                            <td><a href="/books/{{ book.isbn }}" property="pred:has_isbn">{{ book.title }}</a></td>
                             <!-- put all the authors of the book and reference them -->
                             <td>
                                 {% for author in book.author_name %}

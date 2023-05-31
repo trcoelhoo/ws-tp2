@@ -71,7 +71,7 @@ def author(request, author_name):
     image = author['author_image']
     if image is None:
         author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
-
+    print(author['author_image'])
     with open('templates/author.html', 'r') as file:
         obj = mf2py.parse(doc=file)
         print('Author MicroFormats\n\t', obj)
