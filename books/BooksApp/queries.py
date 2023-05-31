@@ -1176,8 +1176,10 @@ class Queries:
         author = dict()
         author['author_name'] = string
         author['books'] = self.get_books(query)
-        if len(author['books']) > 0:
-            author['author_image'] = self.get_author_image(author['author_name'])
+        #if len(author['books']) > 0:
+        #    author['author_image'] = self.get_author_image(author['author_name'])
+        author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+
         return author
 
 

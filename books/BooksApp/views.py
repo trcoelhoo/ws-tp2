@@ -68,9 +68,9 @@ def update(request, book_isbn):
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
     author = q.get_author(author_name)
-    image = author['author_image']
-    if image is None:
-        author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+    #image = author['author_image']
+    #if image is None:
+    #    author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
 
     with open('templates/author.html', 'r') as file:
         obj = mf2py.parse(doc=file)
