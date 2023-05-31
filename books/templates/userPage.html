@@ -10,14 +10,15 @@
 
 
     <body>
-<div class="row">
+    <div class="row">
         <div class="back_button">
             <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
         </div>
     </div>
         <div class="container">
         <div>
-                <br>
+            <br>
+            {% comment %}<p>You have read {{ nBooks }}! You are a {{ type_of_reader }}</p>{% endcomment %}
             <h3 style="">Your 'Read' List</h3>
             <table id="mytableID" style="width:100%"
                    class="table table-striped sampleTable">

@@ -128,6 +128,7 @@ def short_books(request):
 
 def seen_books(request):
     q = Queries(endpoint, repo_name)
-    books = q.get_seen_books()
-    print(books)
-    return render(request, 'userPage.html', {"title": "Read Books", "books": books})
+    read_books = q.get_seen_books()
+    #want_read_books = q.get_seen_books())
+    # return ender(request, 'userPage.html', {"title": "Read Books", "books": read_books, 'want_read_books': want_read_books})
+    return render(request, 'userPage.html', {"title": "Read Books", "books": read_books})
