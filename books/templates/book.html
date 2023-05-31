@@ -40,7 +40,8 @@
                 <p><b>Language:</b> {{ book.language }}</p>
               </div>
               <div class="column" style="flex: 50%; text-align: center;">
-                    <img class="u-photo" alt="{{ book.title }}" src="{{ book.book_image }}">
+                    <img alt="{{ book.title }}" src="{{ book.book_image }}">
+                <img class="u-photo" property="bookp:has_cover"  alt="{{ book.title }}" src="{{ book.book_image }}">
               </div>
             </div>
 

@@ -832,6 +832,22 @@ class Queries:
     
     """
 
+    # Get author popularity
+    getAuthorPopularity = """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX book: <http://books.com/books/>
+    PREFIX bookp: <http://books.com/preds/>
+    
+    SELECT ?popularity
+    WHERE {
+      ?author rdf:type book:Author ;
+              bookp:has_name "replace" ;
+              rdf:type ?popularity .
+      
+      FILTER (?popularity IN (book:Unpopular, book:Popular, book:VeryPopular))
+    }
+    """
+
     create_long_books = """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX book: <http://books.com/books/>
@@ -926,6 +942,44 @@ class Queries:
             }
             
         """
+    # Create popularity for authors
+    #if author has less than 5 books, then unpopular
+    #if author has more than 5 books, and less than 15, then popular
+    #if author has more than 15 books, then very popular
+    create_popularity_author = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX book: <http://books.com/books/>
+        PREFIX bookp: <http://books.com/preds/>
+        
+        INSERT {
+            ?X rdf:type book:Unpopular .
+        }
+        WHERE {
+            ?X rdf:type book:Author .
+            ?X bookp:has_books ?N .
+            FILTER (?N < 5)
+        }
+        
+        INSERT {
+            ?X rdf:type book:Popular .
+        }
+        WHERE {
+            ?X rdf:type book:Author .
+            ?X bookp:has_books ?N .
+            FILTER (?N >= 5 && ?N < 15)
+        }
+        
+        INSERT {
+            ?X rdf:type book:VeryPopular .
+        }
+        WHERE {
+            ?X rdf:type book:Author .
+            ?X bookp:has_books ?N .
+            FILTER (?N >= 15)
+        }
+        
+    """
+
 
 
 
@@ -940,6 +994,7 @@ class Queries:
         self.db.create(self.create_bad_books)
         self.db.create(self.create_popular_books)
         self.db.create(self.create_seen_books)
+        #self.db.create(self.create_popularity_author)
     def get_number_short_books(self):
         response = self.db.query(self.nShortBooks)
         return response[0]['count']['value']
@@ -1123,8 +1178,8 @@ class Queries:
         author['books'] = self.get_books(query)
         if len(author['books']) > 0:
             author['author_image'] = self.get_author_image(author['author_name'])
-
         return author
+
 
 
     def get_author_image(self, author_name):
