@@ -51,7 +51,7 @@ def book(request, book_isbn):
 
     with open('templates/book.html', 'r') as file:
         obj = mf2py.parse(doc=file)
-        print('obj', obj)
+        print('Book MicroFormats\n\t', obj)
 
     return render(request, 'book.html', {'book': book, 'status': status})
 
@@ -72,7 +72,9 @@ def author(request, author_name):
     if image is None:
         author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
 
-    print(author)
+    with open('templates/author.html', 'r') as file:
+        obj = mf2py.parse(doc=file)
+        print('Author MicroFormats\n\t', obj)
     #author_popularity = q.get_author_popularity(author_name)
     #n_books_written = q.get_n_books_by_author(author_name)
     #return render(request, 'author.html', {'author': author, 'author_name': author_name, 'author_popularity': author_popularity, 'n_books_written': n_books_written})
@@ -101,7 +103,6 @@ def search_books_by_years(request):
 def good_books(request):
     q = Queries(endpoint, repo_name)
     good_books = q.get_good_books()
-    print(len(good_books))
     return render(request, 'categories.html', {"title": "Good Books", "books": good_books})
 
 

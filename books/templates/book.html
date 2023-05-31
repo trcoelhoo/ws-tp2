@@ -13,7 +13,6 @@
                 <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
             </div>
         </div>
-    </div>
 
     <!-- show book info -->
     <div class="book h-card">
@@ -40,7 +39,6 @@
                 <p><b>Language:</b> {{ book.language }}</p>
               </div>
               <div class="column" style="flex: 50%; text-align: center;">
-                    <img alt="{{ book.title }}" src="{{ book.book_image }}">
                 <img class="u-photo" property="bookp:has_cover"  alt="{{ book.title }}" src="{{ book.book_image }}">
               </div>
             </div>
@@ -52,15 +50,16 @@
             </div>
 
             <div class="book has_seen">
-                <p>Have you read this book?</p>
+                <p>Book Status</p>
                 {% if book.has_seen == "seen" %}
                     <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
                 {% else %}
                     <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
-                    <button type="button" class="btn btn-info" >Want to Read</button>
+                    {% comment %}<button type="button" class="btn btn-info" >Want to Read</button>{% endcomment %}
                 {% endif %}
+                <p><small>Click to change status</small></p>
 
-             <p>Book status: {{ status }} (if the other part is implemented)</p>
+             {% comment %}<p>Book status: {{ status }} (if the other part is implemented)</p>
                 {% if status == "Read" %}
                     <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
                     <button type="button" class="btn btn-info" >Want to Read</button>
@@ -70,7 +69,7 @@
                 {% else %}
                     <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Remove</button>
                     <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
-                {% endif %}
+                {% endif %}{% endcomment %}
             </div>
             <p><small>ISBN: {{ book.isbn }}</small></p>
             <p><small>Published by {{ book.publisher_name }} on {{ book.publication_date }}</small></p>

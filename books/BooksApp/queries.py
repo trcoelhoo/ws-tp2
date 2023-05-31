@@ -1192,6 +1192,7 @@ class Queries:
             ?author rdfs:label "{author_name}"@en .
         }}
         """)
+        print("hello")
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         if len(results["results"]["bindings"]) > 0:
@@ -1205,11 +1206,13 @@ class Queries:
             ?author rdfs:label "{author_name}"@en .
         }}
         """)
+        print("hello")
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()
         if len(results["results"]["bindings"]) > 0:
+            print("hello")
             return results["results"]["bindings"][0]["image"]["value"]
-        
+        print("hello")
         url=f"https://www.googleapis.com/books/v1/volumes?q={author_name}&maxResults=1"
         response = requests.get(url)
         data = response.json()

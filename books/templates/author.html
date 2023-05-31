@@ -14,15 +14,16 @@
     <div class="back_button">
         <input type="button" value="Previous Page" onClick="javascript:history.go(-1);">
     </div>
+</div>
     <!-- show all the books of the author and their authors, rating, and genre -->
-    <div class="author books">
+    <div class="author books h-card">
         <div class="author table">
             <div class="author_name">
-                <h1>{{ author_name }}'s Books</h1>
+                <h1 class="p-name">{{ author_name }}'s Books</h1>
                 {% comment %}<p>This author has written {{ n_books_written }} book(/s) -> {{ author_popularity }}</p>{% endcomment %}
             </div>
             <div class="author_name">
-                <img property="pred:has_cover" alt="{{ author_name }}" src="{{ author.author_image }}">
+                <img class="u-photo" property="pred:has_cover" alt="{{ author_name }}" src="{{ author.author_image }}">
             </div>
         <br/>
             <table class="table table-striped">
@@ -58,40 +59,6 @@
             </table>
 
         </div>
-        <div class="author_name">
-            <h1>{{ author_name }}'s Books</h1>
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Author</th>
-                    <th>Rating</th>
-                    <th>Genre</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in author.books %}
-                <tr typeof="books:Book">
-                    <td><a href="/books/{{ book.isbn }}" property="pred:title">{{ book.title }}</a></td>
-                    <!-- put all the authors of the book and reference them -->
-                    <td>
-                        {% for author in book.author_name %}
-                        {% if forloop.counter > 1 %}, {% endif %}
-                        <a href="/books/authors/{{ author }}" property="pred:written_by">{{ author }}</a>
-                        {% endfor %}
-                    </td>
-                    <td property="pred:rating">{{ book.rating }}</td>
-                    <td>
-                        {% for genre in book.genre %}
-                        {% if forloop.counter > 1 %}, {% endif %}
-                        <a href="/categories/{{ genre }}" property="pred:has_genre">{{ genre }}</a>
-                        {% endfor %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
 </body>
