@@ -4,7 +4,6 @@ import requests
 
 
 class Queries:
-
     # Get the number of short books (less than 1000 pages)
     nShortBooks = """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -65,7 +64,7 @@ class Queries:
             BIND("Popular" AS ?genre)
             }
     }
-        
+
 
     }
     """
@@ -79,7 +78,7 @@ class Queries:
     WHERE {
         ?book rdf:type books:Good .
     }
-    
+
     """
 
     # Get good books
@@ -131,7 +130,7 @@ class Queries:
             BIND("Popular" AS ?genre)
             }
     }
-        
+
 
     }
     """
@@ -145,7 +144,7 @@ class Queries:
     WHERE {
         ?book rdf:type books:Bad .
     }
-    
+
     """
 
     # Get bad books
@@ -197,7 +196,7 @@ class Queries:
             BIND("Popular" AS ?genre)
             }
     }
-        
+
 
     }
     """
@@ -206,7 +205,7 @@ class Queries:
     nLongBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    
+
     SELECT (COUNT(?book) AS ?count)
     WHERE {
         ?book rdf:type books:Long .
@@ -262,7 +261,7 @@ class Queries:
             BIND("Popular" AS ?genre)
             }
     }
-        
+
 
     }
     """
@@ -271,12 +270,12 @@ class Queries:
     nPopularBooks = """
     PREFIX books: <http://books.com/books/>
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    
+
     SELECT (COUNT(?book) AS ?count)
     WHERE {
         ?book rdf:type books:Popular .
     }
-    
+
     """
 
     # Get popular books
@@ -328,7 +327,7 @@ class Queries:
             BIND("Popular" AS ?genre)
             }
     }
-        
+
 
     }
     """
@@ -468,7 +467,7 @@ class Queries:
     PREFIX pred: <http://books.com/preds/>
     PREFIX authors: <http://books.com/authors/>
     PREFIX publishers: <http://books.com/publishers/>
-    
+
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         {
@@ -648,7 +647,7 @@ class Queries:
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    
+
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_title ?title .
@@ -663,7 +662,7 @@ class Queries:
         ?publisher pred:has_name ?publisher_name .
         ?book pred:published_on ?publication_date .
         ?book pred:has_isbn ?isbn .
-      
+
         # Include inferred genres based on rules
         OPTIONAL {
             {
@@ -691,7 +690,7 @@ class Queries:
                 BIND("Popular" AS ?genre)
             }
         }
-        
+
         FILTER (?publication_date > "year1-01-01"^^xsd:date && ?publication_date < "year2-01-01"^^xsd:date)
     }
 
@@ -701,8 +700,8 @@ class Queries:
     getBook = """
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
-    
-    
+
+
     SELECT DISTINCT ?title ?author_name ?pages ?genre ?rating ?reviews ?has_seen ?language ?publisher_name ?publication_date ?isbn
     WHERE {
         ?book pred:has_title ?title .
@@ -746,7 +745,7 @@ class Queries:
         }
       }
     }
-    
+
     """
 
     # Updates the book to the inverse of the current value
@@ -754,7 +753,7 @@ class Queries:
     PREFIX books: <http://books.com/books/>
     PREFIX pred: <http://books.com/preds/>
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    
+
     DELETE {
       ?book pred:has_seen ?has_seen .
     }
@@ -786,7 +785,7 @@ class Queries:
         ?author pred:has_name "replace" .
         }
     }
-    
+
     # Retrieve the details of the books and their co-authors
     ?book pred:has_title ?title .
     ?book pred:written_by ?author .
@@ -829,7 +828,7 @@ class Queries:
     }
     }
 
-    
+
     """
 
     # Get author popularity
@@ -837,13 +836,13 @@ class Queries:
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX book: <http://books.com/books/>
     PREFIX bookp: <http://books.com/preds/>
-    
+
     SELECT ?popularity
     WHERE {
       ?author rdf:type book:Author ;
               bookp:has_name "replace" ;
               rdf:type ?popularity .
-      
+
       FILTER (?popularity IN (book:Unpopular, book:Popular, book:VeryPopular))
     }
     """
@@ -852,7 +851,7 @@ class Queries:
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX book: <http://books.com/books/>
         PREFIX bookp: <http://books.com/preds/>
-            
+
         INSERT {
             ?X rdf:type book:Long .
         }
@@ -884,7 +883,7 @@ class Queries:
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX book: <http://books.com/books/>
             PREFIX bookp: <http://books.com/preds/>
-            
+
             INSERT {
                 ?X rdf:type book:Good .
             }
@@ -893,14 +892,14 @@ class Queries:
                 ?X bookp:has_rating ?N .
                 FILTER (?N >= 4)
             }
-            
+
         """
 
     create_bad_books = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>   
             PREFIX book: <http://books.com/books/>
             PREFIX bookp: <http://books.com/preds/>
-                
+
             INSERT {
                 ?X rdf:type book:Bad .
             }
@@ -909,13 +908,13 @@ class Queries:
                 ?X bookp:has_rating ?N .
                 FILTER (?N < 4)
             }
-            
+
         """
     create_popular_books = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX book: <http://books.com/books/>
             PREFIX bookp: <http://books.com/preds/>
-            
+
             INSERT {
                 ?X rdf:type book:Popular .
             }
@@ -924,14 +923,14 @@ class Queries:
                 ?X bookp:rated_by ?N .
                 FILTER (?N >= 10000)
             }
-            
+
         """
 
     create_seen_books = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX book: <http://books.com/books/>
             PREFIX bookp: <http://books.com/preds/>
-            
+
             INSERT {
                 ?X rdf:type book:Seen .
             }
@@ -940,17 +939,17 @@ class Queries:
                 ?X bookp:has_seen ?N .
                 FILTER (?N = "true"^^xsd:boolean)
             }
-            
+
         """
     # Create popularity for authors
-    #if author has less than 5 books, then unpopular
-    #if author has more than 5 books, and less than 15, then popular
-    #if author has more than 15 books, then very popular
+    # if author has less than 5 books, then unpopular
+    # if author has more than 5 books, and less than 15, then popular
+    # if author has more than 15 books, then very popular
     create_popularity_author = """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX book: <http://books.com/books/>
         PREFIX bookp: <http://books.com/preds/>
-        
+
         INSERT {
             ?X rdf:type book:Unpopular .
         }
@@ -959,7 +958,7 @@ class Queries:
             ?X bookp:has_books ?N .
             FILTER (?N < 5)
         }
-        
+
         INSERT {
             ?X rdf:type book:Popular .
         }
@@ -968,7 +967,7 @@ class Queries:
             ?X bookp:has_books ?N .
             FILTER (?N >= 5 && ?N < 15)
         }
-        
+
         INSERT {
             ?X rdf:type book:VeryPopular .
         }
@@ -977,12 +976,8 @@ class Queries:
             ?X bookp:has_books ?N .
             FILTER (?N >= 15)
         }
-        
+
     """
-
-
-
-
 
     def __init__(self, endpoint, repo_name):
         self.endpoint = endpoint
@@ -994,7 +989,8 @@ class Queries:
         self.db.create(self.create_bad_books)
         self.db.create(self.create_popular_books)
         self.db.create(self.create_seen_books)
-        #self.db.create(self.create_popularity_author)
+        # self.db.create(self.create_popularity_author)
+
     def get_number_short_books(self):
         response = self.db.query(self.nShortBooks)
         return response[0]['count']['value']
@@ -1054,22 +1050,22 @@ class Queries:
         for i in response:
             # check if the book is already in the list and if it is, add the author to the list of authors and the genre to the list of genres if it is not already there
             if i['isbn']['value'] in isbn_list:
-                #get position of the book in the list
+                # get position of the book in the list
                 position = isbn_list.index(i['isbn']['value'])
-                #get the list of authors
+                # get the list of authors
                 authors = list[position]['author_name']
 
-                #get the list of genres
+                # get the list of genres
                 genres = list[position]['genre']
-                #check if the author is already in the list of authors
+                # check if the author is already in the list of authors
                 if i['author_name']['value'] not in authors:
-                    #if not, add it
+                    # if not, add it
                     authors.append(i['author_name']['value'])
                     list[position]['author_name'] = authors
 
-                #check if the genre is already in the list of genres
+                # check if the genre is already in the list of genres
                 if i['genre']['value'] not in genres:
-                    #if not, add it
+                    # if not, add it
                     genres.append(i['genre']['value'])
                     list[position]['genre'] = genres
 
@@ -1161,12 +1157,10 @@ class Queries:
         else:
             return None
 
-
-
     def update_seen(self, isbn):
         string = str(isbn)
         query = self.updateBook.replace("replace", string)
-        #update seen in the database
+        # update seen in the database
         self.db.create(self.create_seen_books)
         self.db.update(query)
 
@@ -1176,10 +1170,8 @@ class Queries:
         author = dict()
         author['author_name'] = string
         author['books'] = self.get_books(query)
-        #if len(author['books']) > 0:
-        #    author['author_image'] = self.get_author_image(author['author_name'])
-        author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
-
+        if len(author['books']) > 0:
+            author['author_image'] = self.get_author_image(author['author_name'])
         return author
 
     def get_author_image(self, author_name):
@@ -1193,11 +1185,11 @@ class Queries:
         }}
         """)
         sparql.setReturnFormat(JSON)
-        #check if endpoint is up
+        # check if endpoint is up
         try:
 
             results = sparql.query().convert()
-                        
+
             if len(results["results"]["bindings"]) > 0:
                 return results["results"]["bindings"][0]["image"]["value"]
         except:
@@ -1227,7 +1219,7 @@ class Queries:
                     if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
                         return volume_info["imageLinks"]["thumbnail"]
                 return None
-    
+
     def get_book_image(self, book_title):
         url = f"https://www.googleapis.com/books/v1/volumes?q={book_title}&maxResults=1"
         response = requests.get(url)
@@ -1237,9 +1229,9 @@ class Queries:
             volume_info = data["items"][0]["volumeInfo"]
             if "imageLinks" in volume_info and "thumbnail" in volume_info["imageLinks"]:
                 return volume_info["imageLinks"]["thumbnail"]
-        
+
         return None
-    
+
     def get_book_genre(self, book_title):
         sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
         sparql.setQuery(f"""
@@ -1282,7 +1274,7 @@ class Queries:
             volume_info = data["items"][0]["volumeInfo"]
             if "categories" in volume_info and volume_info["categories"]:
                 return volume_info["categories"][0]
-            
+
         return None
 
     def get_author_info(self, author_name):
@@ -1309,4 +1301,3 @@ class Queries:
         return None
 
 
-        
