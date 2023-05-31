@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from BooksApp.queries import Queries
-
+import mf2py
 repo_name = 'books'
 port = 7200
 endpoint = f'http://localhost:{port}'
@@ -23,12 +23,12 @@ def home(request):
     nGood = q.get_number_good_books()
     nBooks = q.get_number_books()
     nShort = q.get_number_short_books()
-    #nLong = q.get_number_long_books()
+    nLong = q.get_number_long_books()
     nPopular = q.get_number_popular_books()
     nSeen = q.get_number_seen_books()
 
     return render(request, 'index.html',
-                  {'nBad': nBad, 'nGood': nGood, 'nBooks': nBooks, 'nShort': nShort, 'nLong': nShort,
+                  {'nBad': nBad, 'nGood': nGood, 'nBooks': nBooks, 'nShort': nShort, 'nLong': nLong,
                    'nPopular': nPopular, 'nSeen': nSeen})
 
 
@@ -45,10 +45,13 @@ def book(request, book_isbn):
     else:
         status = "Not Read"
     status="Want to Read"
-    print(status)
 
     #if book['wantRead'] == "true":
     #    status = "Want to Read"
+
+    with open('templates/book.html', 'r') as file:
+        obj = mf2py.parse(doc=file)
+        print('obj', obj)
 
     return render(request, 'book.html', {'book': book, 'status': status})
 
@@ -82,7 +85,7 @@ def search_books(request):
     print(f"key: {keyword}")
     title = f"Results for key: {keyword}"
     books = q.search_book(keyword)
-    return render(request, 'search.html', {'title': title, "books": books})
+    return render(request, 'search.html', {'title': title, "books": books, 'type': 'text'})
 
 
 def search_books_by_years(request):
@@ -92,7 +95,7 @@ def search_books_by_years(request):
     print(f"key: {year1} {year2}")
     title = f"Results for years: {year1} to {year2}"
     books = q.search_year(year1, year2)
-    return render(request, 'search.html', {'title': title, "books": books})
+    return render(request, 'search.html', {'title': title, "books": books, 'type': 'year'})
 
 
 def good_books(request):

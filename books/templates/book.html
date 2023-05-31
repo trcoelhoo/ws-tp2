@@ -16,9 +16,9 @@
     </div>
 
     <!-- show book info -->
-    <div class="book">
+    <div class="book h-card">
         <div class="book title">
-            <h1>{{ book.title }}</h1>
+            <h1 class="p-name">{{ book.title }}</h1>
         </div>
         <div class="book info">
             <!-- all authors with link to their page -->
@@ -40,7 +40,7 @@
                 <p><b>Language:</b> {{ book.language }}</p>
               </div>
               <div class="column" style="flex: 50%; text-align: center;">
-                    <img alt="{{ book.title }}" src="{{ book.book_image }}">
+                    <img class="u-photo" alt="{{ book.title }}" src="{{ book.book_image }}">
               </div>
             </div>
 
