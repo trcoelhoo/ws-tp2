@@ -44,17 +44,17 @@
                                     <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
-                            {% comment %}<td>
+                            <td>
                                 {% for genre in book.genre %}
                                     <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
-                            </td>{% endcomment %}
+                            </td>
                             <td>{{ book.rating }}</td>
                             <td>{{ book.isbn }}</td>
 
                             <!-- show if it has been read (book.has_seen=="true" with a checkbox, if the user clicks on it, it will be updated in the database (function in the views.py) -->
                             <td>
-                                <input type="checkbox" {% if book.has_seen == "true" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'"></input>
+                                <input type="checkbox" {% if book.has_seen == "seen" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'"></input>
                             </td>
 
                         </tr>

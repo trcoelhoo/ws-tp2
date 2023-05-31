@@ -16,14 +16,14 @@
     <!-- show all the books of the author and their authors, rating, and genre -->
     <div class="author books">
         <div class="author table">
-            <div class="author books">
-                <img src="{{ author.author_image }}" alt="author image">
-            </div>
             <div class="author_name">
                 <h1>{{ author_name }}'s Books</h1>
+                {% comment %}<p>This author has written {{ n_books_written }} book(/s) -> {{ author_popularity }}</p>{% endcomment %}
             </div>
-        <div class="row" style="display: flex">
-                    <div class="column" style="flex: 80%">
+            <div class="author_name">
+                <img alt="{{ author_name }}" src="{{ author.author_image }}">
+            </div>
+        <br/>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -55,11 +55,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-                    </div>
-           <div class="column" style="flex: 20%; text-align: center;">
-                    <img alt="{{ author_name }}" src="{{ author.image }}">
-              </div>
-                </div>
+
         </div>
     </div>
 

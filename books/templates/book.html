@@ -31,11 +31,11 @@
                   </p>
 
                 <!-- all genres with link to their page -->
-                {% comment %}<p><b>Genres:</b>
+                <p><b>Genres:</b>
                          {% for genre in book.genre %}
                             <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
-                </p>{% endcomment %}
+                </p>
                 <p><b>Pages:</b> {{ book.pages }}</p>
                 <p><b>Language:</b> {{ book.language }}</p>
               </div>
@@ -52,10 +52,23 @@
 
             <div class="book has_seen">
                 <p>Have you read this book?</p>
-                {% if book.has_seen == "true" %}
+                {% if book.has_seen == "seen" %}
                     <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
                 {% else %}
                     <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
+                    <button type="button" class="btn btn-info" >Want to Read</button>
+                {% endif %}
+
+             <p>Book status: {{ status }} (if the other part is implemented)</p>
+                {% if status == "Read" %}
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
+                    <button type="button" class="btn btn-info" >Want to Read</button>
+                {% elif status == "Not Read" %}
+                    <button type="button" class="btn btn-info" >Want to Read</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Remove</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
                 {% endif %}
             </div>
             <p><small>ISBN: {{ book.isbn }}</small></p>
@@ -63,6 +76,7 @@
 
         </div>
     </div>
+  </div>
     </body>
 
 

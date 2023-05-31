@@ -35,13 +35,22 @@ def home(request):
 def book(request, book_isbn):
     q = Queries(endpoint, repo_name)
     book = q.get_book_by_isbn(book_isbn)
-    book_image = q.get_book_image(book["title"])
 
     if book['book_image'] is None:
         book['book_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
 
+    status = ""
+    if book['has_seen'] == "seen":
+        status = "Read"
+    else:
+        status = "Not Read"
+    status="Want to Read"
+    print(status)
 
-    return render(request, 'book.html', {'book': book})
+    #if book['wantRead'] == "true":
+    #    status = "Want to Read"
+
+    return render(request, 'book.html', {'book': book, 'status': status})
 
 
 def update(request, book_isbn):
@@ -60,6 +69,10 @@ def author(request, author_name):
     if image is None:
         author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
 
+    print(author)
+    #author_popularity = q.get_author_popularity(author_name)
+    #n_books_written = q.get_n_books_by_author(author_name)
+    #return render(request, 'author.html', {'author': author, 'author_name': author_name, 'author_popularity': author_popularity, 'n_books_written': n_books_written})
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
@@ -116,4 +129,5 @@ def short_books(request):
 def seen_books(request):
     q = Queries(endpoint, repo_name)
     books = q.get_seen_books()
-    return render(request, 'categories.html', {"title": "Read Books", "books": books})
+    print(books)
+    return render(request, 'userPage.html', {"title": "Read Books", "books": books})
