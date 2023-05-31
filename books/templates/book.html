@@ -13,41 +13,73 @@
                 <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
             </div>
         </div>
-        <div class="book" typeof="book:Book">
-            <div class="book title">
-                <h1 property="bookp:has_title">{{ book.title }}</h1>
-            </div>
-            <div class="book info">
-                <div class="cover">
-                    <img property="bookp:has_cover" src="{{ book.book_image }}" alt="cover">
-                </div>
-                <p><b>Written by:</b>
+    </div>
+
+    <!-- show book info -->
+    <div class="book">
+        <div class="book title">
+            <h1>{{ book.title }}</h1>
+        </div>
+        <div class="book info">
+            <!-- all authors with link to their page -->
+            <div class="row" style="display: flex">
+              <div class="column" style="flex: 50%; text-align: center;">
+                  <p><b>Written by:</b>
                     {% for author in book.author_name %}
-                        <a property="bookp:written_by" href="/books/authors/{{ author }}" typeof="author:Author">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                         <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-                </p>
+                  </p>
+
+                <!-- all genres with link to their page -->
                 <p><b>Genres:</b>
-                    {% for genre in book.genre %}
-                        <a property="bookp:has_genre" href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
+                         {% for genre in book.genre %}
+                            <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
                 </p>
-                <p property="bookp:has_pages"><b>Pages:</b> {{ book.pages }}</p>
-                <p property="bookp:has_language"><b>Language:</b> {{ book.language }}</p>
-                <div class="book rating">
-                    <p property="bookp:has_rating"><b>Rating:</b> {{ book.rating }}</p>
-                    <img src="/static/images/star.webp" alt="rating">
-                    <p><small>({{ book.reviews }} reviews)</small></p>
-                </div>
-                <div class="book has_seen">
-                    <p>Have you read this book?</p>
-                    {% if book.has_seen == "unseen" %}
-                        <button property="userp:has_read" type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
-                    {% else %}
-                        <button property="userp:has_read" type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
-                    {% endif %}
-                </div>
-                <p><small>ISBN: <span property="bookp:has_isbn">{{ book.isbn }}</span></small></p>
-                <p><small>Published by <span property="bookp:published_by" typeof="publisher:Publisher">{{ book.publisher_name }}</span> on <span property="bookp:published_on">{{ book.publication_date }}</span></small></p>
+                <p><b>Pages:</b> {{ book.pages }}</p>
+                <p><b>Language:</b> {{ book.language }}</p>
+              </div>
+              <div class="column" style="flex: 50%; text-align: center;">
+                <img property="bookp:has_cover"  alt="{{ book.title }}" src="{{ book.book_image }}">
+              </div>
+            </div>
+
+            <div class="book rating">
+                <p><b>Rating:</b> {{ book.rating }}</p>
+                <img src="/static/images/star.webp" alt="rating" >
+                <p><small>({{ book.reviews }} reviews)</small></p>
+            </div>
+
+            <div class="book has_seen">
+                <p>Have you read this book?</p>
+                {% if book.has_seen == "seen" %}
+                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
+                    <button type="button" class="btn btn-info" >Want to Read</button>
+                {% endif %}
+
+             <p>Book status: {{ status }} (if the other part is implemented)</p>
+                {% if status == "Read" %}
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Not Read</button>
+                    <button type="button" class="btn btn-info" >Want to Read</button>
+                {% elif status == "Not Read" %}
+                    <button type="button" class="btn btn-info" >Want to Read</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='/update/{{ book.isbn }}/'">Remove</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='/update/{{ book.isbn }}/'">Read</button>
+                {% endif %}
+            </div>
+            <p><small>ISBN: {{ book.isbn }}</small></p>
+            <p><small>Published by {{ book.publisher_name }} on {{ book.publication_date }}</small></p>
+
+        </div>
+    </div>
+  </div>
+    </body>
+
+
             </div>
         </div>
     </body>
