@@ -4,3 +4,4 @@ s4api
 rdflib
 python-dotenv
 sparqlwrapper
+mf2py

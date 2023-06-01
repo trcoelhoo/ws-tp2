@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from BooksApp.queries import Queries
-
+import mf2py
 repo_name = 'books'
 port = 7200
 endpoint = f'http://localhost:{port}'
@@ -36,12 +36,30 @@ def book(request, book_isbn):
     q = Queries(endpoint, repo_name)
     book = q.get_book_by_isbn(book_isbn)
 
-    return render(request, 'book.html', {'book': book})
+    if book['book_image'] is None:
+        book['book_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+
+    status = ""
+    if book['has_seen'] == "seen":
+        status = "Read"
+    else:
+        status = "Not Read"
+    status="Want to Read"
+
+    #if book['wantRead'] == "true":
+    #    status = "Want to Read"
+
+    with open('templates/book.html', 'r') as file:
+        obj = mf2py.parse(doc=file)
+        print('Book MicroFormats\n\t', obj)
+
+    return render(request, 'book.html', {'book': book, 'status': status})
 
 
 def update(request, book_isbn):
     q = Queries(endpoint, repo_name)
     q.update_seen(book_isbn)
+
     # send back to the book page
     url = '/books/' + str(book_isbn) + '/'
     return HttpResponseRedirect(url)
@@ -49,7 +67,17 @@ def update(request, book_isbn):
 
 def author(request, author_name):
     q = Queries(endpoint, repo_name)
-    author = q.get_books_by_author(author_name)
+    author = q.get_author(author_name)
+    image = author['author_image']
+    if image is None:
+        author['author_image'] = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+    print(author['author_image'])
+    with open('templates/author.html', 'r') as file:
+        obj = mf2py.parse(doc=file)
+        print('Author MicroFormats\n\t', obj)
+    #author_popularity = q.get_author_popularity(author_name)
+    #n_books_written = q.get_n_books_by_author(author_name)
+    #return render(request, 'author.html', {'author': author, 'author_name': author_name, 'author_popularity': author_popularity, 'n_books_written': n_books_written})
     return render(request, 'author.html', {'author': author, 'author_name': author_name})
 
 
@@ -59,7 +87,7 @@ def search_books(request):
     print(f"key: {keyword}")
     title = f"Results for key: {keyword}"
     books = q.search_book(keyword)
-    return render(request, 'search.html', {'title': title, "books": books})
+    return render(request, 'search.html', {'title': title, "books": books, 'type': 'text'})
 
 
 def search_books_by_years(request):
@@ -69,7 +97,7 @@ def search_books_by_years(request):
     print(f"key: {year1} {year2}")
     title = f"Results for years: {year1} to {year2}"
     books = q.search_year(year1, year2)
-    return render(request, 'search.html', {'title': title, "books": books})
+    return render(request, 'search.html', {'title': title, "books": books, 'type': 'year'})
 
 
 def good_books(request):
@@ -104,5 +132,7 @@ def short_books(request):
 
 def seen_books(request):
     q = Queries(endpoint, repo_name)
-    books = q.get_seen_books()
-    return render(request, 'categories.html', {"title": "Read Books", "books": books})
+    read_books = q.get_seen_books()
+    #want_read_books = q.get_seen_books())
+    # return ender(request, 'userPage.html', {"title": "Read Books", "books": read_books, 'want_read_books': want_read_books})
+    return render(request, 'userPage.html', {"title": "Read Books", "books": read_books})

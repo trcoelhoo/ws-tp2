@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <head>
     {% extends "base.html" %}
     <!-- set the title -->
@@ -16,13 +15,11 @@
             <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
         </div>
     </div>
- <div class="container">
-        <div>
-                <br>
         <div class="container">
-            <h3 style="">
-                All Books
-            </h3>
+        <div>
+            <br>
+            {% comment %}<p>You have read {{ nBooks }}! You are a {{ type_of_reader }}</p>{% endcomment %}
+            <h3 style="">Your 'Read' List</h3>
             <table id="mytableID" style="width:100%"
                    class="table table-striped sampleTable">
                 <thead>
@@ -32,7 +29,6 @@
                         <th>Genre</th>
                         <th>Rating</th>
                         <th>ISBN</th>
-                        <th>Read</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,19 +49,49 @@
                             </td>
                             <td>{{ book.rating }}</td>
                             <td>{{ book.isbn }}</td>
-
-                            <!-- show if it has been read (book.has_seen=="true" with a checkbox, if the user clicks on it, it will be updated in the database (function in the views.py) -->
-                            <td>
-                                <input type="checkbox" {% if book.has_seen == "seen" %} checked {% endif %} onclick="location.href='/update/{{ book.isbn }}/'"></input>
-                            </td>
-
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-     </div>
+{% comment %}
+         <br>
+            <h3 style="">Your 'Want to Read' List</h3>
 
+        <table id="mytableID" style="width:100%"
+                   class="table table-striped sampleTable">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Rating</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <!-- if clicked on the book title, go to the book page -->
+                        <tr>
+                            <td><a href="/books/{{ book.isbn }}">{{ book.title }}</a></td>
+                            <!-- put all the authors from the list in a string -->
+                            <td>
+                                {% for author in book.author_name %}
+                                    <a href="/books/authors/{{ author }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for genre in book.genre %}
+                                    <a href="/categories/{{ genre }}">{{ genre }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ book.rating }}</td>
+                            <td>{{ book.isbn }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>{% endcomment %}
+        </div>
+</div>
         {% block scripts %}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="/static/js/fancyTable.js"></script>
