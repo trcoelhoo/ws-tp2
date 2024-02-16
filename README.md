@@ -1,5 +1,5 @@
-# ws-tp1
-MEI Web Semântica Trabalho Prático 1 
+# ws-tp2
+MEI Web Semântica Trabalho Prático 2 
 
 ## Pastas e conteúdos:
 ```
